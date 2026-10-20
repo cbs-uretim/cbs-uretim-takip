@@ -18,7 +18,7 @@ function loginScreen(){cbsStopPresence();cbsStopMaintenancePolling();cbsMaintena
 
 function showSetPassword(firstLogin=false){
   $('#login').classList.add('hidden'); $('#passwordHelp').classList.add('hidden');
-  $('#app').classList.add('hidden'); $('#setPassword').classList.remove('hidden');
+  $('#app').classList.add('hidden'); $('#register').classList.add('hidden'); $('#setPassword').classList.remove('hidden');
   const h=$('#setPassword h1'); if(h) h.textContent=firstLogin?'İlk Giriş: Kendi Şifrenizi Belirleyin':'Yeni Şifrenizi Oluşturun';
 }
 async function boot() {
@@ -104,7 +104,7 @@ $('#serials').innerHTML=`${writable()?`<div class="panel"><h2>Proses Adet Giriş
  $('#board').innerHTML=`<div class="cbs-board-grid">${activeBatches().map(b=>{const q=quantities(b),pct=progress(b);const entries=STAGES.map((st,i)=>({st,q:q[i]}));return `<article class="cbs-board-card"><div class="cbs-board-top"><div><div class="cbs-board-code">${esc(order(b.order_id)?.code)}</div><div class="cbs-board-sub">${b.litre} LT · ${bar(b)} BAR</div></div><div class="cbs-board-pill">${pct}% ilerleme</div></div><div class="cbs-board-kpis"><div><small>PLAN</small><b>${b.target}</b></div><div><small>SEVK EDİLEN</small><b>${shipped(b)}</b></div><div><small>TESLİM</small><b>${esc(b.end_date||'—')}</b></div></div><div class="progress"><i style="width:${pct}%"></i></div><div class="cbs-stage-head"><span>PROSES</span><span>ULAŞAN ADET</span></div>${entries.map(x=>`<div class="cbs-stage-row"><span>${esc(x.st)}</span><strong>${x.q}</strong></div>`).join('')}</article>`}).join('')||'<div class="panel">Henüz üretim planı bulunmuyor.</div>'}</div>`;
 cbsRenderPerformance();
 $('#board').insertAdjacentHTML('afterbegin',`<div class="panel" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><div><h2 style="margin:0">Üretim Panosu</h2><p class="muted small" style="margin:5px 0 0">Ekranda görünen üretim durumunu PDF olarak kaydedin.</p></div><button type="button" id="boardPdf" class="btn">PDF Rapor Al</button></div>`);
- $('#users').innerHTML=admin()?`<div class="panel"><h2>🛠️ Sistem Bakım Modu</h2><p class="muted small">Bakım sırasında personelin ekranı geçici olarak kapatılır ve veritabanına yeni kayıt yapılması engellenir. Açmadan önce personele haber verin.</p><div class="cbs-maintenance-switch"><b id="cbsMaintenanceStatus">Durum kontrol ediliyor...</b><p><button type="button" class="btn" id="cbsMaintenanceToggle">Bakım durumunu değiştir</button></p></div></div><div class="panel"><h2>+ Yeni Kullanıcı Davet Et</h2><p class="muted small">Geçerli bir e posta adresi girin.</p><form id="inviteForm" class="form"><label>E-posta adresi<input type="email" name="email" placeholder="ornek@gmail.com" required></label><label>Yetki<select name="role"><option value="viewer">Görüntüleyici</option><option value="editor">Yetkili Personel</option><option value="admin">Yönetici</option></select></label><button class="btn">+ Davet Gönder</button></form></div><div class="panel"><h2>Kullanıcı Yetkileri</h2><p class="muted small">🟢 Çevrim içi · ⚪ Çevrim dışı (yaklaşık 1 dakika içinde güncellenir). Hesap Aktif kutusundan farklıdır.</p><div class="tablewrap"><table><thead><tr><th>E-posta</th><th>Rol</th><th>Durum</th><th>İşlem</th></tr></thead><tbody>${state.profiles.map(p=>`<tr><td><span class="cbs-presence-dot" data-presence-id="${p.id}" title="Çevrim dışı"></span>${esc(p.email)}${p.id===profile.id?' (Sen)':''}</td><td><select class="stage-select" data-role="${p.id}" ${p.id===profile.id?'disabled':''}>${options([['admin','Yönetici'],['editor','Yetkili Personel'],['viewer','Görüntüleyici']],p.role)}</select></td><td><label><input type="checkbox" data-active="${p.id}" ${p.active?'checked':''} ${p.id===profile.id?'disabled':''}> Aktif</label></td><td><button class="btn secondary" data-saveuser="${p.id}" ${p.id===profile.id?'disabled':''}>Kaydet</button> <button type="button" class="btn secondary" data-reset-user="${p.id}" ${p.id===profile.id?'disabled':''}>Geçici Şifre</button> <button type="button" class="btn secondary" data-delete-user="${p.id}" ${p.id===profile.id?'disabled':''}>Hesabı Sil</button></td></tr>`).join('')}</tbody></table></div></div>`:'';
+ $('#users').innerHTML=admin()?`<div class="panel"><h2>🛠️ Sistem Bakım Modu</h2><p class="muted small">Bakım sırasında personelin ekranı geçici olarak kapatılır ve veritabanına yeni kayıt yapılması engellenir. Açmadan önce personele haber verin.</p><div class="cbs-maintenance-switch"><b id="cbsMaintenanceStatus">Durum kontrol ediliyor...</b><p><button type="button" class="btn" id="cbsMaintenanceToggle">Bakım durumunu değiştir</button></p></div></div><div class="panel"><h2>⏳ Bekleyen Onaylar</h2><p class="muted small">Yeni kayıtlar onaylanana kadar sisteme giremez. Onaylamadan önce kişinin e-posta adresini doğrulayın.</p><div class="tablewrap"><table><thead><tr><th>E-posta</th><th>Yetki</th><th>İşlem</th></tr></thead><tbody>${state.profiles.filter(p=>!p.active).map(p=>`<tr><td>${esc(p.email)}</td><td><select class="stage-select" data-pending-role="${p.id}">${options([['viewer','Görüntüleyici'],['editor','Yetkili Personel'],['admin','Yönetici']],p.role)}</select></td><td><button type="button" class="btn" data-approve-user="${p.id}">Onayla</button> <button type="button" class="btn secondary" data-reject-user="${p.id}">Reddet</button></td></tr>`).join('')||'<tr><td colspan="3">Bekleyen başvuru yok.</td></tr>'}</tbody></table></div></div><div class="panel"><h2>Kullanıcı Yetkileri</h2><p class="muted small">🟢 Çevrim içi · ⚪ Çevrim dışı (yaklaşık 1 dakika içinde güncellenir). Hesap Aktif kutusundan farklıdır.</p><div class="tablewrap"><table><thead><tr><th>E-posta</th><th>Rol</th><th>Durum</th><th>İşlem</th></tr></thead><tbody>${state.profiles.map(p=>`<tr><td><span class="cbs-presence-dot" data-presence-id="${p.id}" title="Çevrim dışı"></span>${esc(p.email)}${p.id===profile.id?' (Sen)':''}</td><td><select class="stage-select" data-role="${p.id}" ${p.id===profile.id?'disabled':''}>${options([['admin','Yönetici'],['editor','Yetkili Personel'],['viewer','Görüntüleyici']],p.role)}</select></td><td><label><input type="checkbox" data-active="${p.id}" ${p.active?'checked':''} ${p.id===profile.id?'disabled':''}> Aktif</label></td><td><button class="btn secondary" data-saveuser="${p.id}" ${p.id===profile.id?'disabled':''}>Kaydet</button> <button type="button" class="btn secondary" data-delete-user="${p.id}" ${p.id===profile.id?'disabled':''}>Hesabı Sil</button></td></tr>`).join('')}</tbody></table></div></div>`:'';
  $('#audit').innerHTML=`<div class="panel"><h2>Günlük İşlem Geçmişi</h2><p class="muted small">Yalnızca sipariş yönetimi ve proses girişleri. Tarih seçerek geçmişi inceleyebilirsiniz. Adet, proses için yapılan net değişimdir.</p><label>Tarih seçin <input id="historyDate" type="date" value="${esc(historyDate)}"></label><button type="button" class="btn secondary" id="historyAll">Tüm Tarihler</button><div id="historyRows">${historyTable()}</div><div style="display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid #567"><label>Yedeklenecek ay <input id="backupMonth" type="month" value="${esc(backupMonth)}"></label><button type="button" class="btn" id="backupExcel">Excel'e Yedekle</button></div><p class="muted small">Yalnızca seçilen ayda yapılan işlem geçmişi indirilir. Arşiv tarihi dikkate alınmaz.</p></div>`;
 $$('section#dashboard,section#orders,section#serials,section#board,section#users,section#audit,section#performance').forEach(x=>x.classList.toggle('hidden',x.id!==page));document.querySelectorAll('[data-presence-id]').forEach(el=>{const online=cbsOnlineIds.has(el.dataset.presenceId);el.classList.toggle('online',online);el.title=online?'Çevrim içi':'Çevrim dışı';});}
 function showPage(p){if(p==='users'&&!admin())return;page=p;$$('#menu [data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===p));const names={dashboard:'Genel Bakış',orders:'Sipariş Yönetimi',serials:'Proses Takibi',board:'Üretim Panosu',users:'Kullanıcı Yönetimi',audit:'İşlem Geçmişi',performance:'Aylık Performans'};$('#title').textContent=names[p];$$('section#dashboard,section#orders,section#serials,section#board,section#users,section#audit,section#performance').forEach(x=>x.classList.toggle('hidden',x.id!==p))}
@@ -241,33 +241,10 @@ async function exportHistoryExcel(){
   }finally{if(button){button.disabled=false;button.textContent="Excel'e Yedekle";}}
 }
 
-document.addEventListener('submit',async e=>{const form=e.target;if(form.id==='setupForm'){e.preventDefault();const url=$('#supabaseUrl').value.trim(),key=$('#supabaseKey').value.trim();if(!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(url)){err(Error('Supabase proje URL adresini kontrol edin.'));return}localStorage.setItem('cbs_url',url.replace(/\/$/,''));localStorage.setItem('cbs_key',key);location.reload();return}if(form.id==='loginForm'){e.preventDefault();$('#loginError').textContent='';try{const result=await sb.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#password').value});const d=check(result);await enter(d.session)}catch(ex){$('#loginError').textContent=ex.message}return}if(form.id==='inviteForm'){e.preventDefault();if(!admin()){err(Error('Yalnızca yöneticiler kullanıcı davet edebilir.'));return}const fd=new FormData(form);const email=String(fd.get('email')||'').trim().toLowerCase(),role=String(fd.get('role')||'viewer');if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(email)){err(Error('Geçerli bir e-posta adresi girin.'));return}const btn=form.querySelector('button[type=submit]');
-  if(btn){btn.disabled=true;btn.textContent='Davet gönderiliyor...'}
-  try{
-    const {data,error}=await sb.functions.invoke('cbs-invite-user',{body:{email,role}});
-    if(error){
-      let message=error.message||'Davet gönderilemedi.';
-      if(error.context&&typeof error.context.json==='function'){
-        try{const detail=await error.context.json();message=detail.error||detail.message||message}catch(_e){}
-      }
-      throw Error(message);
-    }
-    if(!data?.ok)throw Error(data?.error||'Davet gönderilemedi.');
-    form.reset();
-    const temp=data.temporaryPassword;
-    if(!temp) throw Error('Kullanıcı oluşturuldu fakat geçici şifre alınamadı.');
-    showTemporaryPassword(email,temp);
-    try{await refresh()}catch(refreshError){console.warn('Davet gönderildi fakat liste yenilenemedi:',refreshError)}
-  }catch(ex){
-    err(ex);
-    let box=form.querySelector('[data-invite-error]');
-    if(!box){box=document.createElement('p');box.dataset.inviteError='';box.setAttribute('role','alert');box.style.cssText='color:#b91c1c;font-weight:600;width:100%;margin:8px 0';form.append(box)}
-    box.textContent=ex.message||'Davet gönderilemedi.';
-  }finally{if(btn){btn.disabled=false;btn.textContent='+ Davet Gönder'}}
-  return}if(['orderForm','quickOrder','renameForm','batchForm','serialForm','processForm'].includes(form.id)){e.preventDefault();try{await submitForm(form)}catch(ex){err(ex)}}});
+document.addEventListener('submit',async e=>{const form=e.target;if(form.id==='setupForm'){e.preventDefault();const url=$('#supabaseUrl').value.trim(),key=$('#supabaseKey').value.trim();if(!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(url)){err(Error('Supabase proje URL adresini kontrol edin.'));return}localStorage.setItem('cbs_url',url.replace(/\/$/,''));localStorage.setItem('cbs_key',key);location.reload();return}if(form.id==='loginForm'){e.preventDefault();$('#loginError').textContent='';try{const result=await sb.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#password').value});const d=check(result);await enter(d.session)}catch(ex){$('#loginError').textContent=ex.message}return}if(['orderForm','quickOrder','renameForm','batchForm','serialForm','processForm'].includes(form.id)){e.preventDefault();try{await submitForm(form)}catch(ex){err(ex)}}});
 // Hesap silme ve geçici şifre yenileme yalnızca sunucu tarafında yetki kontrolünden geçer.
 document.addEventListener('click', async e => {
-  const button = e.target.closest('[data-delete-user],[data-reset-user]');
+  const button = e.target.closest('[data-delete-user]');
   if (!button) return;
   e.preventDefault();
   if (!admin()) { err(Error('Bu işlem yalnızca yöneticilere açıktır.')); return; }
@@ -406,7 +383,7 @@ document.addEventListener('submit',async e=>{
   e.preventDefault();
   const box=$('#accountPasswordError');box.textContent='';
   const old=$('#accountOldPassword').value, next=$('#accountNewPassword').value, repeat=$('#accountRepeatPassword').value;
-  if(next.length<8||next!==repeat){box.textContent='Yeni şifre en az 8 karakter olmalı ve tekrar ile eşleşmeli.';return}
+  if(next.length<6||next!==repeat){box.textContent='Yeni şifre en az 6 karakter olmalı ve tekrar ile eşleşmeli.';return}
   const button=e.target.querySelector('button[type=submit]');button.disabled=true;
   try{
     const user=check(await sb.auth.getUser()).user;
@@ -513,3 +490,53 @@ function cbsStartPresence(){
   cbsStopPresence();cbsPresenceHeartbeat();
   cbsPresenceTimer=setInterval(cbsPresenceHeartbeat,20000);
 }
+
+// CBS: Self-service registration. Access requires separate admin approval.
+document.addEventListener('click', e => {
+  if (e.target.closest('#showRegister')) {
+    $('#login').classList.add('hidden'); $('#register').classList.remove('hidden');
+    $('#registerEmail').value=$('#email')?.value||'';
+  }
+  if (e.target.closest('#registerBack')) {
+    $('#register').classList.add('hidden'); $('#login').classList.remove('hidden');
+  }
+});
+document.addEventListener('submit', async e => {
+  if(e.target.id!=='registerForm')return;
+  e.preventDefault();
+  const msg=$('#registerMessage');msg.textContent='';
+  const email=$('#registerEmail').value.trim().toLowerCase();
+  const password=$('#registerPassword').value,repeat=$('#registerRepeat').value;
+  if(password.length<6||password!==repeat){msg.textContent='Şifreler aynı ve en az 6 karakter olmalı.';return;}
+  const btn=e.target.querySelector('button[type=submit]');btn.disabled=true;
+  try{
+    const {error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}});
+    if(error)throw error;
+    msg.textContent='Kayıt talebiniz alındı. E-posta doğrulama bağlantınızı kontrol edin. Doğrulama sonrasında yönetici onayını bekleyin.';
+    e.target.reset();
+    await sb.auth.signOut();
+  }catch(ex){msg.textContent=ex.message||'Kayıt yapılamadı.';}
+  finally{btn.disabled=false;}
+});
+
+document.addEventListener('click',async e=>{
+  const approve=e.target.closest('[data-approve-user]');
+  const reject=e.target.closest('[data-reject-user]');
+  if(!approve&&!reject)return;
+  if(!admin()){err(Error('Yalnızca yönetici işlem yapabilir.'));return;}
+  const id=(approve||reject).dataset.approveUser||(approve||reject).dataset.rejectUser;
+  const target=state.profiles.find(p=>p.id===id);
+  if(!target||target.active){err(Error('Bekleyen kayıt bulunamadı.'));return;}
+  if(approve){
+    const role=document.querySelector(`[data-pending-role="${id}"]`)?.value||'viewer';
+    if(!await cbsConfirm(`${target.email} hesabını ${role} yetkisiyle onaylamak istiyor musunuz?`))return;
+    try{check(await sb.from('profiles').update({role,active:true}).eq('id',id));await refresh();toast('Hesap onaylandı.')}catch(ex){err(ex)}
+  }else{
+    if(!await cbsConfirm(`${target.email} kaydı kalıcı olarak reddedilip silinecek. Emin misiniz?`))return;
+    try{
+      const {data,error}=await sb.functions.invoke('cbs-invite-user',{body:{action:'delete_user',userId:id}});
+      if(error||!data?.ok)throw Error(data?.error||error?.message||'Kayıt silinemedi.');
+      await refresh();toast('Başvuru reddedildi ve hesap silindi.');
+    }catch(ex){err(ex)}
+  }
+});
