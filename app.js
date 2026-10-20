@@ -4,6 +4,7 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const STAGES=['KESİM','PRES','KORDON','BÜKÜM','DOĞRULTMA','GÖVDE KAYNAK','MONTAJ','ÇEVRE KAYNAK','FİTTİNGS KAYNAK','KULAK KULP KAYNAK','TANK TEMİZLİK','HİDROSTATİK TEST','BOYA','PAKETLEME','SEVKİYAT'];
 const LITRES=[5,9,26,45,83,120,149,180,267];
 let sb=null,session=null,profile=null,page='dashboard';
+let cbsPendingTimer=null,cbsPendingBusy=false;
 let cbsMaintenanceActive=false,cbsMaintenanceTimer=null,cbsMaintenanceBusy=false;
 let cbsPresenceTimer=null,cbsPresenceBusy=false,cbsOnlineIds=new Set();
 const cbsRecoveryOnArrival = new URLSearchParams(location.hash.slice(1)).get('type') === 'recovery' || new URLSearchParams(location.search).get('type') === 'recovery';
@@ -14,7 +15,28 @@ function toast(s){const t=$('#toast');t.textContent=s;t.classList.add('show');se
 function err(e){toast(e?.message||String(e))}
 function check({error,data}){if(error)throw error;return data}
 function initClient(){const cfg=window.CBS_CONFIG||{};const url=cfg.supabaseUrl||localStorage.getItem('cbs_url');const key=cfg.supabaseAnonKey||localStorage.getItem('cbs_key');if(!url||!key){$('#setup').classList.remove('hidden');return false}if(!window.supabase?.createClient){$('#setup').classList.remove('hidden');toast('Supabase kütüphanesi yüklenemedi; internet bağlantısını kontrol edin.');return false}sb=window.supabase.createClient(url,key,{auth:{persistSession:true,autoRefreshToken:true}});return true}
-function loginScreen(){cbsStopPresence();cbsStopMaintenancePolling();cbsMaintenanceActive=false;document.querySelector('#cbsMaintenance')?.classList.add('hidden');session=null;profile=null;$('#app').classList.add('hidden');$('#setPassword').classList.add('hidden');$('#passwordHelp').classList.add('hidden');$('#login').classList.remove('hidden')}
+function cbsStopPending(){if(cbsPendingTimer){clearInterval(cbsPendingTimer);cbsPendingTimer=null;}}
+function cbsHideAuthScreens(){['login','register','passwordHelp','setPassword','pendingApproval'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));}
+function cbsShowPending(s){
+ session=s;profile=null;cbsStopPresence();cbsStopMaintenancePolling();cbsHideAuthScreens();
+ $('#app').classList.add('hidden');$('#pendingApproval').classList.remove('hidden');
+ cbsStopPending();cbsPendingTimer=setInterval(cbsCheckPending,4000);cbsCheckPending();
+}
+async function cbsCheckPending(){
+ if(cbsPendingBusy||!session)return;cbsPendingBusy=true;
+ try{
+  const {data:{session:current},error:authError}=await sb.auth.getSession();
+  if(authError)throw authError;
+  if(!current){cbsStopPending();loginScreen();return;}
+  session=current;
+  const {data:p,error}=await sb.from('profiles').select('id,email,role,active').eq('id',current.user.id).maybeSingle();
+  if(error)throw error;
+  if(p?.active){cbsStopPending();await enter(current);return;}
+  const status=$('#pendingStatus');if(status)status.textContent='Yönetici onayı bekleniyor. Bu sayfayı açık bırakabilirsiniz.';
+ }catch(e){const status=$('#pendingStatus');if(status)status.textContent='Onay kontrol edilemedi, tekrar denenecek: '+(e.message||e);}
+ finally{cbsPendingBusy=false;}
+}
+function loginScreen(){cbsStopPending();$('#pendingApproval')?.classList.add('hidden');$('#register')?.classList.add('hidden');cbsStopPresence();cbsStopMaintenancePolling();cbsMaintenanceActive=false;document.querySelector('#cbsMaintenance')?.classList.add('hidden');session=null;profile=null;$('#app').classList.add('hidden');$('#setPassword').classList.add('hidden');$('#passwordHelp').classList.add('hidden');$('#login').classList.remove('hidden')}
 
 function showSetPassword(firstLogin=false){
   $('#login').classList.add('hidden'); $('#passwordHelp').classList.add('hidden');
@@ -29,6 +51,7 @@ async function boot() {
     // Normal site ziyaretinde her zaman e-posta ve sifre giris ekrani acilir.
     // Yalnizca gercek sifre kurtarma/davet baglantilarinda sifre ekrani gosterilir.
     if (await handleInvitation()) return;
+    if(s){await enter(s);return;}
     loginScreen();
   } catch (e) {
     loginScreen();
@@ -36,7 +59,7 @@ async function boot() {
   }
 }
 
-async function enter(s){const {data:authData,error:authError}=await sb.auth.getUser();if(authError)throw authError;if(authData?.user?.app_metadata?.cbs_must_change_password){session=s;showSetPassword(true);return;}session=s;const p=check(await sb.from('profiles').select('id,email,role,active').eq('id',s.user.id).maybeSingle());if(!p||!p.active) {await sb.auth.signOut();loginScreen();throw Error('Hesabınız aktif değil. Yöneticinize başvurun.')}profile=p;$('#login').classList.add('hidden');$('#setup').classList.add('hidden');$('#app').classList.remove('hidden');$('#who').textContent=p.email;$('#userEmail').textContent=p.email;$('#roleLabel').textContent=({admin:'Yönetici',editor:'Yetkili Personel',viewer:'Görüntüleyici'})[p.role];$('#usersNav').hidden=!admin();$('#auditNav').hidden=false;const perfNav=document.querySelector('#menu [data-page="performance"]');if(perfNav)perfNav.hidden=false;$('#newOrder').hidden=!writable();const oldExport=document.querySelector('#export');if(oldExport)oldExport.hidden=true;const processNav=document.querySelector('#menu [data-page="serials"]');if(processNav)processNav.textContent='⚙ Proses Takibi';await refresh();showPage('dashboard');await cbsCheckMaintenance();cbsStartMaintenancePolling();cbsStartPresence()}
+async function enter(s){const {data:authData,error:authError}=await sb.auth.getUser();if(authError)throw authError;if(authData?.user?.app_metadata?.cbs_must_change_password){session=s;showSetPassword(true);return;}session=s;const p=check(await sb.from('profiles').select('id,email,role,active').eq('id',s.user.id).maybeSingle());if(!p||!p.active){cbsShowPending(s);return;}cbsStopPending();cbsHideAuthScreens();profile=p;$('#login').classList.add('hidden');$('#setup').classList.add('hidden');$('#app').classList.remove('hidden');$('#who').textContent=p.email;$('#userEmail').textContent=p.email;$('#roleLabel').textContent=({admin:'Yönetici',editor:'Yetkili Personel',viewer:'Görüntüleyici'})[p.role];$('#usersNav').hidden=!admin();$('#auditNav').hidden=false;const perfNav=document.querySelector('#menu [data-page="performance"]');if(perfNav)perfNav.hidden=false;$('#newOrder').hidden=!writable();const oldExport=document.querySelector('#export');if(oldExport)oldExport.hidden=true;const processNav=document.querySelector('#menu [data-page="serials"]');if(processNav)processNav.textContent='⚙ Proses Takibi';await refresh();showPage('dashboard');await cbsCheckMaintenance();cbsStartMaintenancePolling();cbsStartPresence()}
 async function refresh(){if(!session)return;const [o,b,s,p]=await Promise.all([sb.from('orders').select('*').order('id',{ascending:false}),sb.from('batches').select('*').order('id',{ascending:false}),sb.from('serials').select('*').order('id',{ascending:false}),sb.from('process_tracking').select('*')]);state.orders=check(o);state.batches=check(b);state.serials=check(s);state.processes=check(p);if(admin()){state.profiles=check(await sb.from('profiles').select('id,email,role,active,created_at').order('created_at'))}state.history=check(await sb.from('production_history').select('*').order('created_at',{ascending:false}).limit(1000));render();if(admin())cbsLoadPresence().catch(console.warn)}
 const isActiveOrder=id=>!order(id)?.archived_at;
 const activeBatches=()=>state.batches.filter(b=>isActiveOrder(b.order_id));
@@ -512,9 +535,10 @@ document.addEventListener('submit', async e => {
   try{
     const {error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}});
     if(error)throw error;
-    msg.textContent='Kayıt talebiniz alındı. E-posta doğrulama bağlantınızı kontrol edin. Doğrulama sonrasında yönetici onayını bekleyin.';
+    msg.textContent='Kaydınız alındı. Yönetici onayı bekleniyor.';
     e.target.reset();
-    await sb.auth.signOut();
+    const {data:{session:registered}}=await sb.auth.getSession();
+    if(registered)cbsShowPending(registered);else msg.textContent='Kaydınız alındı. Yönetici onayı bekleniyor. Giriş yaparak durumunuzu kontrol edebilirsiniz.';
   }catch(ex){msg.textContent=ex.message||'Kayıt yapılamadı.';}
   finally{btn.disabled=false;}
 });
@@ -540,3 +564,6 @@ document.addEventListener('click',async e=>{
     }catch(ex){err(ex)}
   }
 });
+
+// Bekleme ekranından çıkış.
+document.addEventListener('click',async e=>{if(!e.target.closest('#pendingLogout'))return;cbsStopPending();try{await sb.auth.signOut()}catch(_){}loginScreen();});
