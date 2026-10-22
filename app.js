@@ -413,12 +413,10 @@ document.addEventListener('submit',async e=>{
   if(e.target.id!=='accountPasswordForm')return;
   e.preventDefault();
   const box=$('#accountPasswordError');box.textContent='';
-  const old=$('#accountOldPassword').value, next=$('#accountNewPassword').value, repeat=$('#accountRepeatPassword').value;
+  const next=$('#accountNewPassword').value, repeat=$('#accountRepeatPassword').value;
   if(next.length<6||next!==repeat){box.textContent='Yeni şifre en az 6 karakter olmalı ve tekrar ile eşleşmeli.';return}
   const button=e.target.querySelector('button[type=submit]');button.disabled=true;
   try{
-    const user=check(await sb.auth.getUser()).user;
-    check(await sb.auth.signInWithPassword({email:user.email,password:old}));
     check(await sb.auth.updateUser({password:next}));
     e.target.reset();$('#accountPasswordPanel').classList.add('hidden');toast('Şifreniz değiştirildi.');
   }catch(ex){box.textContent=ex.message||'Şifre değiştirilemedi.'}
