@@ -316,42 +316,59 @@ async function exportHistoryExcel(){
   }finally{if(button){button.disabled=false;button.textContent="Excel'e Yedekle";}}
 }
 
-// Siparis kodu duzenleme: bagimsiz, acik geri bildirimli form isleyicisi.
-// Capture asamasinda yakalanir; genel submit handler'ina ikinci kez dusmez.
-document.addEventListener('submit', async function(e){
-  if(e.target?.id!=='renameForm')return;
-  e.preventDefault();
-  e.stopImmediatePropagation();
-  const form=e.target;
+// CBS sipariş kodu güncelleme: Kaydet tıklamasını formun varsayılan GET
+// gönderimine dönüşmeden yakala. Submit olayı da klavyeyle kullanım için desteklenir.
+let cbsRenameBusy=false;
+async function cbsRenameSave(form){
+  if(cbsRenameBusy)return;
   const status=form.querySelector('#renameStatus');
   const button=form.querySelector('button[type="submit"]');
-  const show=(msg,ok=false)=>{if(status){status.textContent=msg;status.style.color=ok?'#087e59':'#b42318';}else toast(msg);};
-  if(button?.disabled)return;
-  if(!writable()){show('Siparis kodu duzenleme yetkiniz yok.');return;}
-  const fd=new FormData(form);
-  const id=Number(fd.get('id'));
+  const show=(message,success=false)=>{
+    const el=document.querySelector('#renameStatus')||status;
+    if(el){el.textContent=message;el.style.color=success?'#087e59':'#b42318';}
+    else toast(message);
+  };
+  if(!writable()){show('Sipariş kodu düzenleme yetkiniz yok.');return;}
+  const fd=new FormData(form),id=Number(fd.get('id'));
   const newCode=String(fd.get('code')||'').trim().toLocaleUpperCase('tr-TR');
   const oldOrder=order(id);
-  if(!oldOrder){show('Lutfen gecerli bir siparis secin.');return;}
-  if(!newCode||newCode.length>40){show('Yeni kod 1-40 karakter olmali.');return;}
-  if(oldOrder.code===newCode){show('Yeni kod mevcut siparis koduyla ayni.');return;}
-  if(state.orders.some(o=>o.id!==id&&o.code===newCode)){show('Bu siparis kodu zaten kayitli.');return;}
-  button.disabled=true;
-  button.textContent='Kaydediliyor...';
-  show('Supabase uzerinde guncelleme yapiliyor...',true);
+  if(!oldOrder){show('Lütfen bir sipariş seçin.');return;}
+  if(!newCode||newCode.length>40){show('Yeni kod 1–40 karakter olmalıdır.');return;}
+  if(oldOrder.code===newCode){show('Yeni kod mevcut kodla aynı.');return;}
+  if(state.orders.some(o=>o.id!==id&&o.code===newCode)){show('Bu sipariş kodu zaten kayıtlı.');return;}
+  cbsRenameBusy=true;
+  if(button){button.disabled=true;button.textContent='Kaydediliyor...';}
+  show('Sipariş kodu güncelleniyor...',true);
   try{
     const {data,error}=await sb.from('orders').update({code:newCode}).eq('id',id).select('id,code').maybeSingle();
     if(error)throw error;
-    if(!data||data.code!==newCode)throw Error('Veritabani guncellemeyi onaylamadi. Supabase orders UPDATE yetkisini kontrol edin.');
-    try{await logHistory({code:newCode,action:`Siparis kodu degistirildi (${oldOrder.code})`});}
-    catch(logError){console.warn('Siparis kodu degisti ancak gecmise yazilamadi:',logError);}
-    await refresh();
-    // render() formu yeniden olusturur, bu nedenle mesaj yeni forma yazilir.
-    const newStatus=document.querySelector('#renameStatus');
-    if(newStatus){newStatus.textContent=`Basarili: ${oldOrder.code} → ${newCode}`;newStatus.style.color='#087e59';}
-    toast(`Siparis kodu guncellendi: ${oldOrder.code} → ${newCode}`);
-  }catch(ex){console.error('Siparis kodu guncelleme hatasi:',ex);show('Guncelleme basarisiz: '+(ex.message||String(ex)));}
-  finally{button.disabled=false;button.textContent='Kaydet';}
+    if(!data||data.code!==newCode)throw Error('Veritabanı güncellemeyi onaylamadı. orders UPDATE yetkisini kontrol edin.');
+    try{await logHistory({code:newCode,action:`Sipariş kodu değiştirildi (${oldOrder.code})`});}
+    catch(historyError){console.warn('Kod değişti ancak işlem geçmişi kaydedilemedi:',historyError);}
+    try{await refresh();}
+    catch(refreshError){console.warn('Kod değişti ancak ekran yenilenemedi:',refreshError);}
+    show(`Başarılı: ${oldOrder.code} → ${newCode}`,true);
+    toast(`Sipariş kodu değiştirildi: ${oldOrder.code} → ${newCode}`);
+  }catch(error){
+    console.error('CBS sipariş kodu güncelleme:',error);
+    show('Güncelleme başarısız: '+(error.message||String(error)));
+  }finally{
+    cbsRenameBusy=false;
+    if(button&&button.isConnected){button.disabled=false;button.textContent='Kaydet';}
+  }
+}
+// Tıklama yolu: native form gönderimini kesin olarak engeller.
+document.addEventListener('click',function(e){
+  const button=e.target.closest?.('#renameForm button[type="submit"]');
+  if(!button)return;
+  e.preventDefault();e.stopImmediatePropagation();
+  cbsRenameSave(button.closest('form'));
+},true);
+// Enter ile gönderme yolu.
+document.addEventListener('submit',function(e){
+  if(e.target?.id!=='renameForm')return;
+  e.preventDefault();e.stopImmediatePropagation();
+  cbsRenameSave(e.target);
 },true);
 
 document.addEventListener('submit',async e=>{const form=e.target;if(form.id==='setupForm'){e.preventDefault();const url=$('#supabaseUrl').value.trim(),key=$('#supabaseKey').value.trim();if(!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(url)){err(Error('Supabase proje URL adresini kontrol edin.'));return}localStorage.setItem('cbs_url',url.replace(/\/$/,''));localStorage.setItem('cbs_key',key);location.reload();return}if(form.id==='loginForm'){e.preventDefault();$('#loginError').textContent='';try{const result=await sb.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#password').value});const d=check(result);await enter(d.session)}catch(ex){$('#loginError').textContent=ex.message}return}if(['orderForm','quickOrder','renameForm','batchForm'].includes(form.id)&&!writable()){e.preventDefault();err(Error('Bu işlem için yetkiniz yok.'));return;}if(form.id==='stockForm'){e.preventDefault();if(!writable()){err(Error('Bu işlem için yetkiniz yok.'));return;}const fd=new FormData(form);const itemId=Number(fd.get('item_id')),qty=Number(fd.get('quantity')),movementType=String(fd.get('movement_type'));if(!Number.isSafeInteger(itemId)||itemId<=0||!Number.isFinite(qty)||qty<=0||!['IN','OUT'].includes(movementType)){err(Error('Geçerli malzeme ve miktar seçin.'));return;}const btn=form.querySelector('button[type=submit]');if(btn)btn.disabled=true;try{check(await sb.rpc('cbs_stock_move',{p_item_id:itemId,p_movement_type:movementType,p_quantity:qty,p_note:String(fd.get('note')||'').trim()}));stockSelectedId=String(itemId);await refresh();toast('Stok hareketi kaydedildi.')}catch(ex){err(ex)}finally{if(btn)btn.disabled=false}return;}if(['orderForm','quickOrder','renameForm','batchForm','serialForm','processForm'].includes(form.id)){e.preventDefault();try{await submitForm(form)}catch(ex){err(ex)}}});
