@@ -151,7 +151,27 @@ $$('section#dashboard,section#orders,section#serials,section#board,section#users
 function showPage(p){if(!['dashboard','orders','serials','board','performance','users','audit'].includes(p))p='dashboard';if(p==='users'&&!admin())p='dashboard';if(p==='orders'&&!writable())p='dashboard';page=p;const newOrderButton=document.querySelector('#newOrder');if(newOrderButton)newOrderButton.hidden=!(p==='orders'&&writable());const passwordPanel=document.querySelector('#accountPasswordPanel');if(passwordPanel)passwordPanel.classList.add('hidden');$$('#menu [data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===p));const names={dashboard:'Genel Bakış',orders:'Sipariş Yönetimi',serials:'Proses Takibi',board:'Üretim Panosu',users:'Kullanıcı Yönetimi',audit:'İşlem Geçmişi',performance:'Aylık Performans'};$('#title').textContent=names[p];$$('section#dashboard,section#orders,section#serials,section#board,section#users,section#audit,section#performance').forEach(x=>x.classList.toggle('hidden',x.id!==p))}
 async function mutation(fn){if(!writable())throw Error('Bu işlem için yetkiniz yok.');await fn();await refresh();toast('Kayıt başarıyla güncellendi.')}
 async function submitForm(form){const fd=new FormData(form),obj=Object.fromEntries(fd.entries());switch(form.id){case 'orderForm':case 'quickOrder':await mutation(async()=>{check(await sb.from('orders').insert({code:obj.code.trim().toUpperCase()}));await logHistory({code:obj.code.trim().toUpperCase(),action:'Sipariş oluşturuldu'})});$('#modal').close();break;
-case 'renameForm':await mutation(async()=>{const previous=order(Number(obj.id));check(await sb.from('orders').update({code:obj.code.trim().toUpperCase()}).eq('id',Number(obj.id)));await logHistory({code:obj.code.trim().toUpperCase(),action:`Sipariş kodu değiştirildi (${previous?.code||'—'})`})});break;
+case 'renameForm':{
+  const orderId=Number(obj.id);
+  const previous=order(orderId);
+  const newCode=String(obj.code||'').trim().toLocaleUpperCase('tr-TR');
+  if(!previous||!Number.isSafeInteger(orderId))throw Error('Düzenlenecek sipariş bulunamadı.');
+  if(!newCode||newCode.length>40)throw Error('Yeni sipariş kodu 1–40 karakter olmalıdır.');
+  if(previous.code===newCode)throw Error('Yeni sipariş kodu mevcut kodla aynı.');
+  if(state.orders.some(o=>o.id!==orderId&&o.code===newCode))throw Error('Bu sipariş kodu zaten kullanılıyor.');
+  const btn=form.querySelector('button[type="submit"],button:not([type])');
+  if(btn){btn.disabled=true;btn.textContent='Güncelleniyor...';}
+  try{
+    const {data,error}=await sb.from('orders').update({code:newCode}).eq('id',orderId).select('id,code').single();
+    if(error)throw Error(error.code==='PGRST116'?'Sipariş kodu güncellenemedi: veritabanı güncelleme iznini kontrol edin.':error.message);
+    if(!data||data.code!==newCode)throw Error('Sipariş kodu veritabanında güncellenemedi.');
+    try{await logHistory({code:newCode,action:`Sipariş kodu değiştirildi (${previous.code})`});}
+    catch(historyError){console.warn('Sipariş kodu güncellendi, işlem geçmişi yazılamadı:',historyError);toast('Kod değişti ancak işlem geçmişi kaydedilemedi: '+historyError.message);}
+    await refresh();
+    toast(`Sipariş kodu değiştirildi: ${previous.code} → ${newCode}`);
+  }finally{if(btn){btn.disabled=false;btn.textContent='Kaydet';}}
+  break;
+ }
 case 'batchForm':{
  const isBombeType=obj.product_type==='BOMBE',isTankType=obj.product_type==='TANK';
  const rec={order_id:Number(obj.order_id),product_type:isBombeType?'BOMBE':isTankType?'TANK':'TUP',litre:isBombeType?null:Number(obj.litre),pressure_bar:isBombeType?null:Number(obj.pressure_bar),bombe_model:isBombeType?String(obj.bombe_model):null,diameter_mm:!isBombeType&&Number(obj.litre)===120?Number(obj.diameter_mm)||null:null,litre_variant:!isBombeType&&Number(obj.litre)===1000?String(obj.litre_variant):null,target:Number(obj.target),start_date:obj.start_date||null,end_date:obj.end_date||null};
