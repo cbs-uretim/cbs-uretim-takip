@@ -156,6 +156,12 @@ function stockManagement(){const x=stockCurrent();return `<div class="panel"><h2
 function render(){const planned=activeBatches().reduce((sum,b)=>sum+(Number(b.target)||0),0),delivered=activeBatches().reduce((sum,b)=>sum+shipped(b),0),readyCount=activeBatches().reduce((sum,b)=>sum+ready(b),0);$('#dashboard').innerHTML=`<div class="stats"><div class="stat"><div class="label">TOPLAM SİPARİŞ</div><div class="number">${state.orders.filter(o=>!o.archived_at).length}</div><div class="meta">Aktif sipariş</div></div><div class="stat"><div class="label">ÜRETİM GRUBU</div><div class="number">${activeBatches().length}</div><div class="meta">Tüp ve bombe planı</div></div><div class="stat"><div class="label">PLANLANAN ÜRÜN</div><div class="number">${planned}</div><div class="meta">Toplam sipariş adedi</div></div><div class="stat"><div class="label">SEVKİYATA HAZIR</div><div class="number">${readyCount}</div><div class="meta">Paketlenen, henüz sevk edilmeyen tüp/tank</div></div><div class="stat"><div class="label">SEVK EDİLENLER</div><div class="number">${delivered}</div><div class="meta">SEVKİYAT prosesine ulaşan adet</div></div></div>${stockDashboard()}<div class="panel"><h2>Üretim Durumu</h2>${summaryTable()}</div>`;
 $('#orders').innerHTML=`${writable()?`<div class="panel"><h2>Sipariş Oluştur</h2><form id="orderForm" class="form"><label>Sipariş kodu<input name="code" placeholder="CBS317" maxlength="40" required></label><button class="btn">+ Sipariş Ekle</button></form></div><div class="panel"><h2>Sipariş Kodu Düzenle</h2><form id="renameForm" class="form"><label>Sipariş<select name="id" required>${ordersOptions()}</select></label><label>Yeni kod<input name="code" maxlength="40" required></label><button type="submit" class="btn">Kaydet</button><p id="renameStatus" role="status" aria-live="polite" style="width:100%;font-weight:700"></p></form></div><div class="panel"><h2>Üretim Planı (Tüp / Bombe / Tank)</h2><form id="batchForm" class="form"><label>Sipariş<select name="order_id" required>${ordersOptions()}</select></label><label>Ürün tipi<select name="product_type" id="productType"><option value="TUP">Tüp</option><option value="BOMBE">Bombe</option><option value="TANK">Tank</option></select></label><label data-tup>Litre<select name="litre" id="batchLitre">${options(LITRES.map(n=>[n,n+' LT']))}</select></label><label data-tup>Basınç türü<select name="pressure_bar"><option value="42">42 BAR</option><option value="25">25 BAR</option><option value="11">11 BAR</option></select></label><label data-tup data-120 hidden>120 L çapı<select name="diameter_mm"><option value="">Çap seçin</option><option value="323">323 mm</option><option value="355">355 mm</option><option value="406">406 mm</option></select></label><label data-tup data-1000 hidden>1000 L türü<select name="litre_variant">${options(VARIANTS)}</select></label><label data-bombe hidden>Bombe modeli<select name="bombe_model">${options(BOMBE_MODELS.map(x=>[x,x]))}</select></label><label>Planlanan adet<input type="number" name="target" min="0" required></label><label>Başlangıç<input type="date" name="start_date"></label><label>Bitiş<input type="date" name="end_date"></label><button class="btn">Planı Kaydet</button></form><p class="muted small">Aynı sipariş ve aynı ürün özelliği tekrar kaydedilirse mevcut plan güncellenir.</p></div>`:''}<div class="panel"><h2>Kayıtlı Üretim Planları</h2>${summaryTable()}</div>${admin()?`<div class="panel"><h2>Sipariş ve Üretim Grubu İşlemleri</h2><p class="muted small">Silme işlemi bağlı üretim gruplarını, proses adetlerini ve seri numaralarını da kalıcı olarak kaldırabilir. Tamamlanan siparişleri saklamak için arşivleyin.</p><div class="tablewrap"><table><thead><tr><th>Sipariş</th><th>İşlem</th></tr></thead><tbody>${state.orders.filter(o=>!o.archived_at).map(o=>`<tr><td>${esc(o.code)}</td><td><button type="button" class="btn secondary" data-archive-order="${o.id}">Arşivle</button> <button type="button" class="btn secondary" data-del-order="${o.id}">Sil</button></td></tr>`).join('')||'<tr><td colspan="2">Aktif sipariş yok.</td></tr>'}</tbody></table></div><h2>Üretim Grubu Silme</h2><div class="tablewrap"><table><thead><tr><th>Sipariş / Litre</th><th>İşlem</th></tr></thead><tbody>${activeBatches().map(b=>`<tr><td>${esc(batchLabel(b))}</td><td><button type="button" class="btn secondary" data-del-batch="${b.id}">Sil</button></td></tr>`).join('')||'<tr><td colspan="2">Üretim grubu yok.</td></tr>'}</tbody></table></div></div><div class="panel"><h2>Arşivlenen Siparişler</h2><div class="tablewrap"><table><thead><tr><th>Sipariş</th><th>Arşiv Tarihi</th><th>İşlem</th></tr></thead><tbody>${state.orders.filter(o=>o.archived_at).map(o=>`<tr><td>${esc(o.code)}</td><td>${fmt(o.archived_at)}</td><td><button type="button" class="btn secondary" data-restore-order="${o.id}">Geri Yükle</button></td></tr>`).join('')||'<tr><td colspan="3">Arşivlenmiş sipariş yok.</td></tr>'}</tbody></table></div></div>`:''}`;
 $('#orders').insertAdjacentHTML('beforeend',stockManagement());
+ // Mevcut üretim grubunun ürün bilgilerini, ID ve proses kayıtlarını koruyarak düzenleme.
+ if(writable()){
+  $('#orders').insertAdjacentHTML('beforeend',`<div class="panel"><h2>Ürün Bilgilerini Düzenle</h2><p class="muted small">Mevcut üretim grubunu seçin. Sipariş, planlanan adet ve proses kayıtları korunur.</p><form id="editProductForm" class="form"><label>Üretim grubu<select name="batch_id" id="editProductBatch" required>${batchesOptions()}</select></label><label>Ürün tipi<select name="product_type" id="editProductType"><option value="TUP">Tüp</option><option value="TANK">Tank</option><option value="BOMBE">Bombe</option></select></label><label data-edit-tup>Litre<select name="litre">${options(LITRES.map(n=>[n,n+' LT']))}</select></label><label data-edit-tup>Basınç<select name="pressure_bar"><option value="42">42 BAR</option><option value="25">25 BAR</option><option value="11">11 BAR</option></select></label><label data-edit-120 hidden>120 L çapı<select name="diameter_mm"><option value="">Çap seçin</option><option value="323">323 mm</option><option value="355">355 mm</option><option value="406">406 mm</option></select></label><label data-edit-1000 hidden>1000 L türü<select name="litre_variant">${options(VARIANTS)}</select></label><label data-edit-bombe hidden>Bombe modeli<select name="bombe_model">${options(BOMBE_MODELS.map(x=>[x,x]))}</select></label><button type="submit" class="btn">Ürün Bilgilerini Kaydet</button></form><p id="editProductStatus" role="status" aria-live="polite"></p></div>`);
+  cbsFillEditProduct();
+ }
+
  $('#serials').innerHTML=`${writable()?`<div class="panel"><h2>Proses Adet Girişi</h2><p class="muted small">Her prosese ulaşan toplam ürün adedini girin. Önceki aşamalara eksik giriş varsa sistem onları da bu adede tamamlar.</p><form id="processForm" class="form"><label>Sipariş / Ürün<select name="batch_id" id="processBatch" required>${batchesOptions()}</select></label><label>Proses<select name="process_name" id="processName" required>${options(STAGES.map(x=>[x,x]))}</select></label><label>Bu prosese eklenecek adet<input type="number" name="quantity" min="0" step="1" required placeholder="1"></label><button class="btn">Proses Adedini Kaydet</button></form></div>`:''}<div class="panel"><h2>Üretimdeki Tüp ve Bombelerin Durumu</h2><p class="muted small">Bu aşamada bekleyen: sonraki prosese geçmemiş adet. Toplamlar sipariş planına göre gösterilir; sonraki prosese sonradan girilen adet önceki aşamalarda tekrar sayılmaz.</p>${activeBatches().map(b=>`<div class="panel"><h2>${esc(batchLabel(b))} · ${b.target} adet</h2><div class="progress"><i style="width:${progress(b)}%"></i></div><p class="muted">Genel proses ilerlemesi: <b>${progress(b)}%</b> · Son prosese ulaşan: <b>${shipped(b)}</b></p>${processTable(b)}</div>`).join('')||'<p>Henüz üretim grubu bulunmuyor.</p>'}</div>`;
  $('#board').innerHTML=`<div class="cbs-board-grid">${activeBatches().map(b=>{const q=quantities(b),pct=progress(b);const balance=processBalance(b);const entries=stagesFor(b).map((st,i)=>({st,q:balance.atStage[i]}));return `<article class="cbs-board-card"><div class="cbs-board-top"><div><div class="cbs-board-code">${esc(order(b.order_id)?.code)}</div><div class="cbs-board-sub">${esc(detailFor(b))}</div></div><div class="cbs-board-pill">${pct}% ilerleme</div></div><div class="cbs-board-kpis"><div><small>PLAN</small><b>${b.target}</b></div><div><small>SON PROSES</small><b>${shipped(b)}</b></div><div><small>TESLİM</small><b>${esc(b.end_date||'—')}</b></div></div><div class="progress"><i style="width:${pct}%"></i></div><div class="cbs-stage-row"><span>Henüz üretime girmeyen</span><strong>${balance.notStarted}</strong></div><div class="cbs-stage-head"><span>PROSES</span><span>BU AŞAMADA BEKLEYEN</span></div>${entries.map(x=>`<div class="cbs-stage-row"><span>${esc(x.st)}</span><strong>${x.q}</strong></div>`).join('')}</article>`}).join('')||'<div class="panel">Henüz üretim planı bulunmuyor.</div>'}</div>`;
 cbsRenderPerformance();cbsToggleProductForm();cbsSyncProcess();
@@ -330,6 +336,64 @@ async function exportHistoryExcel(){
     toast(`${month} için ${records.length} işlem Excel'e aktarıldı.`);
   }finally{if(button){button.disabled=false;button.textContent="Excel'e Yedekle";}}
 }
+
+function cbsFillEditProduct(){
+ const f=document.querySelector('#editProductForm');if(!f)return;
+ const b=batch(Number(f.elements.batch_id.value));if(!b)return;
+ f.elements.product_type.value=b.product_type||'TUP';
+ if(b.litre!=null)f.elements.litre.value=String(b.litre);
+ if(b.pressure_bar!=null)f.elements.pressure_bar.value=String(b.pressure_bar);
+ f.elements.diameter_mm.value=b.diameter_mm==null?'':String(b.diameter_mm);
+ if(b.litre_variant)f.elements.litre_variant.value=b.litre_variant;
+ if(b.bombe_model)f.elements.bombe_model.value=b.bombe_model;
+ cbsToggleEditProduct();
+}
+function cbsToggleEditProduct(){
+ const f=document.querySelector('#editProductForm');if(!f)return;
+ const bombe=f.elements.product_type.value==='BOMBE',litre=Number(f.elements.litre.value);
+ f.querySelectorAll('[data-edit-tup]').forEach(el=>el.hidden=bombe);
+ f.querySelectorAll('[data-edit-bombe]').forEach(el=>el.hidden=!bombe);
+ f.querySelectorAll('[data-edit-120]').forEach(el=>el.hidden=bombe||litre!==120);
+ f.querySelectorAll('[data-edit-1000]').forEach(el=>el.hidden=bombe||litre!==1000);
+}
+document.addEventListener('change',e=>{
+ if(e.target.id==='editProductBatch')cbsFillEditProduct();
+ if(e.target.id==='editProductType'||e.target.closest('#editProductForm')?.elements.litre===e.target)cbsToggleEditProduct();
+});
+let cbsEditProductBusy=false;
+async function cbsSaveEditProduct(f){
+ if(cbsEditProductBusy)return;
+ const status=f.querySelector('#editProductStatus'),button=f.querySelector('button[type="submit"]');
+ const report=(message,ok=false)=>{if(status){status.textContent=message;status.style.color=ok?'#087e59':'#b42318';}else toast(message);};
+ if(!writable()){report('Bu işlem için yetkiniz yok.');return;}
+ const fd=new FormData(f),b=batch(Number(fd.get('batch_id')));
+ if(!b||!isActiveOrder(b.order_id)){report('Geçerli bir üretim grubu seçin.');return;}
+ const type=String(fd.get('product_type'));
+ if(!['TUP','TANK','BOMBE'].includes(type)){report('Ürün tipi geçersiz.');return;}
+ const litre=Number(fd.get('litre')),pressure=Number(fd.get('pressure_bar'));
+ if(type==='TANK'&&litre!==1000){report('Tank için 1000 LT seçilmelidir.');return;}
+ if(type!=='BOMBE'&&(!LITRES.includes(litre)||![11,25,42].includes(pressure))){report('Litre ve basınç bilgilerini kontrol edin.');return;}
+ const diameter=litre===120?Number(fd.get('diameter_mm')):null;
+ if(type!=='BOMBE'&&litre===120&&![323,355,406].includes(diameter)){report('120 LT için çap seçin.');return;}
+ const variant=litre===1000?String(fd.get('litre_variant')):null;
+ if(type!=='BOMBE'&&litre===1000&&!VARIANTS.some(x=>x[0]===variant)){report('1000 LT için ürün türünü seçin.');return;}
+ const model=String(fd.get('bombe_model'));
+ if(type==='BOMBE'&&!BOMBE_MODELS.includes(model)){report('Bombe modelini seçin.');return;}
+ const update=type==='BOMBE'?{product_type:'BOMBE',litre:null,pressure_bar:null,diameter_mm:null,litre_variant:null,bombe_model:model}:{product_type:type,litre,pressure_bar:pressure,diameter_mm:diameter,litre_variant:variant,bombe_model:null};
+ if(state.batches.some(x=>x.id!==b.id&&x.order_id===b.order_id&&x.product_type===update.product_type&&x.litre===update.litre&&Number(x.pressure_bar||0)===Number(update.pressure_bar||0)&&(x.diameter_mm??null)===(update.diameter_mm??null)&&(x.litre_variant??null)===(update.litre_variant??null)&&(x.bombe_model??null)===(update.bombe_model??null))){report('Aynı siparişte bu özelliklere sahip başka bir üretim grubu var.');return;}
+ if(!await cbsConfirm(`${batchLabel(b)}\n\nYeni ürün: ${type==='BOMBE'?'BOMBE / '+model:type+' / '+litre+' LT / '+pressure+' BAR'+(variant?' / '+(VARIANTS.find(x=>x[0]===variant)?.[1]||variant):'')}\n\nMevcut proses kayıtları ve plan adedi korunacak. Onaylıyor musunuz?`))return;
+ cbsEditProductBusy=true;if(button)button.disabled=true;report('Kaydediliyor...',true);
+ try{
+  const {data,error}=await sb.from('batches').update(update).eq('id',b.id).select('*').single();
+  if(error)throw error;if(!data||data.product_type!==type)throw Error('Veritabanı güncellemeyi onaylamadı.');
+  try{await logHistory({b:data,action:'Ürün bilgileri değiştirildi ('+detailFor(b)+')'});}catch(e){console.warn('Ürün değişti ancak geçmiş kaydedilemedi:',e);}
+  await refresh();toast('Ürün bilgileri güncellendi: '+batchLabel(data));
+ }catch(e){report('Güncelleme başarısız: '+(e.message||String(e)));}
+ finally{cbsEditProductBusy=false;if(button?.isConnected)button.disabled=false;}
+}
+// Formun tarayıcı tarafından GET olarak gönderilmesini engelle.
+document.addEventListener('submit',e=>{if(e.target?.id!=='editProductForm')return;e.preventDefault();e.stopImmediatePropagation();cbsSaveEditProduct(e.target);},true);
+document.addEventListener('click',e=>{const btn=e.target.closest?.('#editProductForm button[type="submit"]');if(!btn)return;e.preventDefault();e.stopImmediatePropagation();cbsSaveEditProduct(btn.closest('form'));},true);
 
 // CBS sipariş kodu güncelleme: Kaydet tıklamasını formun varsayılan GET
 // gönderimine dönüşmeden yakala. Submit olayı da klavyeyle kullanım için desteklenir.
