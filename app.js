@@ -78,7 +78,7 @@ function batchLabel(b){return `${order(b.order_id)?.code||'?'} / ${detailFor(b)}
 function fmt(d){return d?new Date(d).toLocaleDateString('tr-TR'):'—'}
 function reached(b,stage){return Number(state.processes.find(p=>p.batch_id===b.id&&p.process_name===stage)?.quantity||0)}
 function quantities(b){return stagesFor(b).map(st=>reached(b,st))}
-function progress(b){const n=Number(b.target)||0;return n?Math.min(100,Math.round(100*quantities(b).reduce((sum,q)=>sum+Math.min(q,n),0)/(n*stagesFor(b).length))):0}
+function progress(b){const n=Number(b.target)||0;if(n<=0)return 0;const counts=processBalance(b).cumulative;return Math.max(0,Math.min(100,Math.round(100*counts.reduce((sum,q)=>sum+Math.min(Math.max(0,q),n),0)/(n*stagesFor(b).length))))}
 function shipped(b){return isBombe(b)?reached(b,'KORDON ÇEKME'):reached(b,'SEVKİYAT')}
 function ready(b){return isBombe(b)?0:Math.max(0,reached(b,'PAKETLEME')-reached(b,'SEVKİYAT'))}
 // Kümülatif proses girişlerinden her istasyonda fiilen bekleyen adedi hesapla.
