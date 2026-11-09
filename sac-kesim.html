@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>CBS | Sac Kesim &amp; Fire Takip</title>
+<style>
+:root{--navy:#10283c;--blue:#2276aa;--teal:#098d78;--bg:#f2f6f9;--line:#dbe5ec;--muted:#687f91;--gold:#dca749;--red:#c85350}*{box-sizing:border-box}body{font-family:Inter,'Segoe UI',Arial,sans-serif;color:#20394c;background:var(--bg);margin:0;font-size:13px}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}button:disabled{opacity:.45;cursor:not-allowed}.header{background:linear-gradient(125deg,#0c283c,#195177);color:#fff;padding:17px 28px 20px}.brandbar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;max-width:1450px;margin:auto}.brand{flex:1 1 140px;min-width:105px;max-width:220px;height:75px;background:#ffffffed;border-radius:11px;padding:7px;display:flex;align-items:center;justify-content:center}.brand img{max-width:100%;max-height:100%;object-fit:contain}.brand:last-child{max-width:85px;flex-basis:85px}.headerTitle{max-width:1450px;margin:15px auto 0;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.headerTitle h1{font-size:24px;letter-spacing:.3px;margin:0}.headerTitle p{margin:5px 0 0;color:#c5d8e5}.shell{max-width:1480px;padding:18px 20px 45px;margin:auto}.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.nav button{background:#fff;color:#385e75;border:1px solid #d7e3eb;padding:12px 16px;border-radius:10px;font-weight:750}.nav button.active{background:var(--navy);color:white;border-color:var(--navy)}.view{display:none}.view.active{display:block}.layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{background:white;border:1px solid var(--line);border-radius:15px;padding:19px;box-shadow:0 3px 16px #12375008;margin-bottom:16px}.card h2{font-size:17px;margin:0 0 12px;color:var(--navy)}.card h3{font-size:14px;margin:14px 0 9px;color:var(--blue)}.desc{color:var(--muted);font-size:12px;line-height:1.6;margin:0 0 14px}.formgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.field label{display:block;color:#557286;font-size:11px;font-weight:700;margin:0 0 5px}.field input,.field select,.field textarea{width:100%;padding:10px;border:1px solid #ccdae4;border-radius:8px;outline:none;background:#fff;color:#18364c;min-width:0}.field input:focus,.field select:focus{border-color:#3596ce;box-shadow:0 0 0 3px #2b87be15}.field.wide{grid-column:span 2}.field.full{grid-column:1/-1}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.btn{background:#1c6d9f;border-radius:9px;color:white;padding:11px 14px;font-weight:750}.btn.alt{background:#e9f3fa;color:#1d638a}.btn.good{background:#108b73}.btn.warn{background:#fff1ec;color:#a6493e}.btn.dark{background:#15364e}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:17px}.kpi{border-radius:14px;background:white;border:1px solid var(--line);padding:17px;box-shadow:0 2px 10px #0a304006}.kpi span{font-size:11px;color:var(--muted);font-weight:750}.kpi strong{display:block;font-size:23px;letter-spacing:-.5px;color:#153e5a;margin-top:7px}.kpi small{font-size:11px;color:#648399}.tbl{overflow:auto;border-radius:9px;border:1px solid var(--line)}table{width:100%;border-collapse:collapse;font-size:12px}th{background:#eef5f9;text-align:left;color:#52718a;padding:11px;white-space:nowrap}td{padding:10px;border-top:1px solid #e4edf3;vertical-align:middle}td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}tr:hover td{background:#f9fcfd}.muted{color:var(--muted)}.tag{padding:4px 8px;border-radius:6px;background:#e4f5ef;color:#13795c;display:inline-block;font-size:11px;font-weight:750}.tag.partial{background:#fff4df;color:#90631c}.tag.wait{background:#eaf1f7;color:#526d81}.message{padding:11px 13px;border-radius:9px;background:#e9f5fa;color:#2b6078;line-height:1.6;margin:11px 0}.message.warn{background:#fff4e2;color:#875719}.filter{display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin:10px 0 16px}.filter .field{min-width:150px}.barrow{margin:12px 0}.barlabel{display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-bottom:7px}.barTrack{background:#e6eef3;border-radius:20px;height:13px;overflow:hidden}.barFill{height:100%;background:var(--teal);border-radius:20px}.stack{display:flex;height:20px;overflow:hidden;border-radius:7px;background:#eaf0f4;margin:10px 0}.stack div{height:100%}.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#627b8b}.dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px}.empty{text-align:center;color:#7890a1;padding:26px}.reporthead{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.reporthead h2{margin:0}.reportPaper{padding:8px 3px}.meta{color:#658093;font-size:11px}.statline{display:flex;gap:10px;flex-wrap:wrap}.ministat{flex:1;min-width:140px;background:#f1f7fa;border:1px solid #deebf2;padding:14px;border-radius:10px}.ministat small{color:#648198}.ministat strong{display:block;color:#173d59;font-size:21px;margin-top:7px}.note{font-size:11px;color:#758c9c;line-height:1.7}.tiny{font-size:11px}.toolbar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}#toast{position:fixed;bottom:25px;right:25px;z-index:30;background:#153b52;color:white;padding:12px 19px;border-radius:10px;box-shadow:0 8px 22px #2346;display:none}.printOnly{display:none}@media(max-width:1030px){.layout{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.header{padding:12px}.headerTitle h1{font-size:18px}.shell{padding:12px 9px}.formgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.field.wide{grid-column:span 2}.kpis{gap:7px}.kpi{padding:12px}.kpi strong{font-size:18px}.card{padding:13px}.nav button{padding:9px 10px}.brand{height:55px;flex-basis:130px}.brand:last-child{max-width:70px}}@page{size:A4 landscape;margin:13mm}@media print{body{background:white}.header,.nav,.noprint,#toast{display:none!important}.shell{margin:0;padding:0;max-width:none}.view{display:none!important}#reportView{display:block!important}.card{box-shadow:none;border:0;padding:0;margin:0}.printOnly{display:block}.reportPaper{padding:0}table{font-size:9px}th,td{padding:6px}tr{break-inside:avoid}.kpis{display:none}.reportPaper .ministat{padding:9px}.reportPaper .ministat strong{font-size:16px}}
+
+/* CBS ana uygulama içinde görüntüleme */
+body{background:#f2f6f9}.shell{padding:16px 12px 30px;max-width:none}.nav{position:sticky;top:0;z-index:10;background:#f2f6f9;padding:8px 0}.nav button{border-radius:8px}.nav button.active{background:#173f5c}.card{border-radius:12px}#cbsSacAccess{padding:12px;background:#fff3d7;color:#7a530a;border-radius:8px;margin-bottom:12px}
+</style><script async="" src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script></head><body>
+
+<main class="shell"><div id="cbsSacAccess" style="display:none"></div><div class="nav noprint"><button class="" data-view="dashboard">Genel Bakış</button><button class="" data-view="orders">Kesim Programları</button><button class="" data-view="daily">Günlük Gerçekleşme</button><button class="" data-view="reportView">Raporlar / PDF</button><button class="active" data-view="backup">Kayıt ve Yedek</button></div>
+<section class="view" id="dashboard"><div class="toolbar"><div><h2>Üretim kontrol özeti</h2><p class="desc">Kesim programları bir kez tanımlanır; her gün hangi programdan kaç levha kesildiyse ayrı kaydedilir.</p></div><div class="field"><label>Dönem</label><input id="dashMonth" type="month"/></div></div><div class="kpis" id="dashKpi"><div class="kpi"><span>Kesilen sac</span><strong>4,016 ton</strong><small>2026-11</small></div><div class="kpi"><span>Net ürün</span><strong>3,658 ton</strong><small>2026-11</small></div><div class="kpi"><span>Hurda</span><strong>0,305 ton</strong><small>2026-11</small></div><div class="kpi"><span>Levha sayısı</span><strong>27 adet</strong><small>2026-11</small></div></div><div class="layout"><div class="card"><h2>Aylık malzeme dağılımı</h2><div id="distribution"><div class="stack"><div style="width:91.07393195700188%;background:#188d79"></div><div style="width:1.3209694247246633%;background:#e4ac54"></div><div style="width:7.605098618273452%;background:#c55d59"></div></div><div class="legend"><span><i class="dot" style="background:#188d79"></i>Net ürün 3.657,52 kg</span><span><i class="dot" style="background:#e4ac54"></i>Kullanılabilir 53,05 kg</span><span><i class="dot" style="background:#c55d59"></i>Hurda 305,42 kg</span></div><p class="note">Hurda oranı: %7,6 · Teorik 2 sa 48 dk / Gerçek 8 sa 11 dk</p></div></div><div class="card"><h2>Kesim işi ilerlemesi</h2><div id="progress"><div class="barrow"><div class="barlabel"><b>1000tek</b><span>23 / 23 levha</span></div><div class="barTrack"><div class="barFill" style="width:100%"></div></div></div><div class="barrow"><div class="barlabel"><b>c323phsr</b><span>1 / 1 levha</span></div><div class="barTrack"><div class="barFill" style="width:100%"></div></div></div><div class="barrow"><div class="barlabel"><b>c323phsr</b><span>5 / 5 levha</span></div><div class="barTrack"><div class="barFill" style="width:100%"></div></div></div><div class="barrow"><div class="barlabel"><b>fujikay</b><span>1 / 1 levha</span></div><div class="barTrack"><div class="barFill" style="width:100%"></div></div></div><div class="barrow"><div class="barlabel"><b>c323phsr</b><span>2 / 2 levha</span></div><div class="barTrack"><div class="barFill" style="width:100%"></div></div></div></div></div></div><div class="card"><h2>Son gerçekleşen kesimler</h2><div id="recent"><div class="tbl"><table><thead><tr><th>Tarih</th><th>Kesim programı</th><th>Levha</th><th>Kesime giren sac</th><th>Hurda</th><th>Gerçek süre</th></tr></thead><tbody><tr><td class="">2026-11-06</td><td class="">c323phsr</td><td class="num">2</td><td class="num">710,66 kg</td><td class="num">172,24 kg</td><td class="num">2 sa 00 dk</td></tr><tr><td class="">2026-11-06</td><td class="">fujikay</td><td class="num">1</td><td class="num">39,35 kg</td><td class="num">8,88 kg</td><td class="num">0 sa 35 dk</td></tr><tr><td class="">2026-11-05</td><td class="">c323phsr</td><td class="num">1</td><td class="num">355,33 kg</td><td class="num">86,12 kg</td><td class="num">1 sa 00 dk</td></tr><tr><td class="">2026-11-05</td><td class="">1000tek</td><td class="num">23</td><td class="num">2.910,65 kg</td><td class="num">38,18 kg</td><td class="num">4 sa 36 dk</td></tr><tr><td class="">2026-10-30</td><td class="">c323phsr</td><td class="num">5</td><td class="num">1.776,65 kg</td><td class="num">430,60 kg</td><td class="num">5 sa 00 dk</td></tr></tbody></table></div></div></div></section>
+<section class="view" id="orders"><div class="layout"><div class="card"><h2>Yeni kesim programı / düzenle <span style="font-size:12px;color:#07816a">V4.5 · GÖRÜNTÜ PDF OCR + KUTU AKTARIMI</span></h2><p class="desc">AJAN PDF raporundaki <b>bir levhaya ait</b> değerleri gir. PDF dosyasını seçip açabilir, adını kayda ekleyebilirsin. PDF seçilince AJAN raporu okunmaya çalışılır. Okunan değerleri kontrol edip onayla; okunamayan alanları elle doldur. PDF metni için birden fazla okuma yolu denenir. Görüntü PDF ve gelişmiş çözümleme internet gerektirebilir.</p><form id="orderForm"><input id="orderId" type="hidden" value=""/><div class="formgrid"><div class="field"><label>İş / kesim programı adı *</label><input id="jobName" placeholder="149 L gövde / özel müşteri" required=""/></div><div class="field"><label>AJAN MPG dosya adı</label><input id="mpgName" placeholder="149ltgov.mpg"/></div><div class="field"><label>İş / sipariş no</label><input id="jobNo" placeholder="307"/></div><div class="field"><label>Planlanan levha adedi *</label><input id="planned" min="1" required="" step="1" type="number"/></div><div class="field"><label>Levha boyu (mm)</label><input id="length" min="1" step="0.01" type="number"/></div><div class="field"><label>Levha eni (mm)</label><input id="width" min="1" step="0.01" type="number"/></div><div class="field"><label>Sac kalınlığı (mm)</label><input id="thick" min="0.01" step="0.01" type="number"/></div><div class="field"><label>Malzeme kalitesi (elle değiştirilebilir)</label><input id="material" list="cbsMaterialChoices" placeholder="PDF’den gelir veya elle yazılır"/><datalist id="cbsMaterialChoices"><option value="P355NH"></option><option value="P355GH"></option><option value="S235JR"></option><option value="S355JR"></option><option value="DKP"></option><option value="AISI 304"></option><option value="AISI 316L"></option></datalist><div class="note">PDF’de yazan kalite otomatik gelir; düzeltmek için bu kutuya yazabilirsin.</div></div><div class="field"><label>Yoğunluk (g/cm³) — değiştirilebilir</label><input id="sheetDensity" min="0.01" step="0.001" type="number" value="7.87"/><div class="note">Çelik: 7,87 · Paslanmaz: 7,93. Özel malzemelerde elle gir.</div></div><div class="field"><label>Teorik süre / levha (dk:sn) *</label><input id="theory" placeholder="18:33" required=""/></div><div class="field"><label>Levha toplam kg * <span style="font-weight:400;color:#07816a">(ölçülerden otomatik)</span></label><input id="sheetMass" min="0" required="" step="0.001" type="number"/><div class="note" id="sheetMassHint" style="margin-top:4px;font-size:11px">AJAN PDF orijinal: 126.55 kg. PDF değeri formülle değiştirilmez.</div></div><div class="field"><label>Net parça kg / levha *</label><input id="partsMass" min="0" required="" step="0.001" type="number"/></div><div class="field"><label>AJAN fire kg / levha * (PDF orijinal)</label><input id="scrapMass" min="0" required="" step="0.001" type="number"/><div class="note">AJAN Scrap Metal Weight değeridir; Reusable eklenmez.</div></div><div class="field"><label>AJAN Reusable Sheet Weight kg / levha</label><input id="reuseMass" min="0" step="0.001" type="number" value="0"/><div class="note">AJAN raporundaki ayrı kalemdir; ana hurdaya eklenmez.</div></div><div class="field"><label>Referans PDF dosyası</label><input accept="application/pdf,.pdf" id="pdfFile" type="file"/></div><div class="field"><label>Program tarihi</label><input id="orderDate" type="date"/></div><div class="field full"><label>Kesim açıklaması / içindeki parçalar</label><textarea id="jobNotes" placeholder="İsteğe bağlı açıklama" rows="2"></textarea></div></div><div class="message" id="pdfReadStatus" role="status">PDF seçildiğinde otomatik okuma başlar.</div><div class="actions"><button class="btn alt" disabled="" id="retryPdf" type="button">PDF’yi yeniden oku</button></div><div class="actions"><button class="btn alt" id="manualMassCalculate" style="font-weight:800;background:#17699d;color:white" type="button">LEVHA KG VE HURDAYI HESAPLA</button></div><div class="note" id="cbsAjanExtra" style="margin:8px 0;font-weight:600">Kesim yolu: 10.571,56 mm | Delme: 10 | AJAN hurda: 1.66 kg | Reusable: 1.76 kg</div><div class="message" id="massCheck">Levha ağırlığı dengesi kontrol edilecek.</div><div class="actions"><button class="btn good" type="submit">Kesim programını kaydet</button><button class="btn alt" id="orderClear" type="button">Yeni / formu temizle</button><button class="btn alt" disabled="" id="openPdf" type="button">Seçilen PDF'yi aç</button></div><div class="note">PDF'nin yalnız dosya adı kayda alınır; büyük PDF dosyasının içeriği HTML/JSON içine kopyalanmaz. Orijinal AJAN PDF ve MPG arşivini ayrıca sakla.</div></form></div><div class="card"><h2>Kayıtlı kesim programları</h2><div class="filter"><div class="field" style="flex:1"><label>Program ara</label><input id="orderSearch" placeholder="İş adı, dosya veya sipariş numarası"/></div></div><p class="desc" style="margin:8px 0"><b>Durum günlük kesimlerden hesaplanır.</b> PDF yüklemek işi başlatmaz; sağdaki <b>Günlük kesim gir</b> düğmesiyle her günün gerçek kesilen levha adedini kaydet.</p><div id="orderList"><div class="tbl"><table><thead><tr><th>Program / PDF</th><th>Planlanan</th><th>Kesilen</th><th>Kalan</th><th>Durum</th><th>İşlem</th></tr></thead><tbody><tr><td class=""><b>1000tek</b><div class="note">1000tek.mpg</div></td><td class="num">23</td><td class="num">23</td><td class="num">0</td><td class=""><span class="tag">Tamamlandı</span></td><td class=""><button class="btn good tiny" onclick="quickDaily('mw8w1f0sklp87xnr')">Günlük kesim gir</button> <button class="btn alt tiny" onclick="editOrder('mw8w1f0sklp87xnr')">Düzenle</button> <button class="btn warn tiny" onclick="removeOrder('mw8w1f0sklp87xnr')">Sil</button></td></tr><tr><td class=""><b>c323phsr</b><div class="note">c323phsr.mpg</div></td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class=""><span class="tag">Tamamlandı</span></td><td class=""><button class="btn good tiny" onclick="quickDaily('mw8vr064zplqaw7q')">Günlük kesim gir</button> <button class="btn alt tiny" onclick="editOrder('mw8vr064zplqaw7q')">Düzenle</button> <button class="btn warn tiny" onclick="removeOrder('mw8vr064zplqaw7q')">Sil</button></td></tr><tr><td class=""><b>c323phsr</b><div class="note">c323phsr.mpg</div></td><td class="num">5</td><td class="num">5</td><td class="num">0</td><td class=""><span class="tag">Tamamlandı</span></td><td class=""><button class="btn good tiny" onclick="quickDaily('mw8vkitxxbcd3200')">Günlük kesim gir</button> <button class="btn alt tiny" onclick="editOrder('mw8vkitxxbcd3200')">Düzenle</button> <button class="btn warn tiny" onclick="removeOrder('mw8vkitxxbcd3200')">Sil</button></td></tr><tr><td class=""><b>fujikay</b><div class="note">fujikay.mpg</div></td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class=""><span class="tag">Tamamlandı</span></td><td class=""><button class="btn good tiny" onclick="quickDaily('mw8tlbe8iwxhme9w')">Günlük kesim gir</button> <button class="btn alt tiny" onclick="editOrder('mw8tlbe8iwxhme9w')">Düzenle</button> <button class="btn warn tiny" onclick="removeOrder('mw8tlbe8iwxhme9w')">Sil</button></td></tr><tr><td class=""><b>c323phsr</b><div class="note">c323phsr.mpg</div></td><td class="num">2</td><td class="num">2</td><td class="num">0</td><td class=""><span class="tag">Tamamlandı</span></td><td class=""><button class="btn good tiny" onclick="quickDaily('mw8tcznn4osc0fjv')">Günlük kesim gir</button> <button class="btn alt tiny" onclick="editOrder('mw8tcznn4osc0fjv')">Düzenle</button> <button class="btn warn tiny" onclick="removeOrder('mw8tcznn4osc0fjv')">Sil</button></td></tr></tbody></table></div></div></div></div></section>
+<section class="view" id="daily"><div class="layout"><div class="card"><h2>Günlük gerçekleşme kaydı</h2><p class="desc">Her gün kesilen levha adedini gir. Program aynı işe ait tüm günlerin adetlerini toplayarak Kesilen / Kalan durumunu, net ürün ve AJAN hurda kg değerlerini günceller.</p><form id="dailyForm"><input id="entryId" type="hidden" value=""/><div class="formgrid"><div class="field"><label>Kesim tarihi *</label><input id="entryDate" required="" type="date"/></div><div class="field wide"><label>Kayıtlı kesim programı *</label><select id="entryJob" required=""><option value="">Kesim programı seç</option><option value="mw8tcznn4osc0fjv">c323phsr — c323phsr.mpg</option><option value="mw8tlbe8iwxhme9w">fujikay — fujikay.mpg</option><option value="mw8vkitxxbcd3200">c323phsr — c323phsr.mpg</option><option value="mw8vr064zplqaw7q">c323phsr — c323phsr.mpg</option><option value="mw8w1f0sklp87xnr">1000tek — 1000tek.mpg</option></select></div><div class="field"><label>Bugün kesilen levha *</label><input id="entryQty" min="1" required="" step="1" type="number"/></div><div class="field"><label>Gerçek geçen süre (sa:dk) *</label><input id="actualTime" placeholder="2:45" required=""/></div><div class="field full"><label>Not / acil iş / duruş açıklaması</label><input id="entryNote" placeholder="Örneğin: acil müşteri işi için kesim durdu"/></div></div><div class="message" id="entryPreview">Programı seçtiğinde kalan miktar ve beklenen net ürün/hurda hesaplanacak.</div><div class="actions"><button class="btn good" type="submit">Günlük kesimi kaydet</button><button class="btn alt" id="entryClear" type="button">Formu temizle</button></div></form></div><div class="card"><div class="toolbar"><h2>Seçilen günün işleri</h2><div class="field"><label>Gün</label><input id="dayFilter" type="date"/></div></div><div id="daySummary"><div class="statline"><div class="ministat"><small>Kesilen levha</small><strong>24</strong></div><div class="ministat"><small>Kesilen sac</small><strong>3.265,98 kg</strong></div><div class="ministat"><small>Hurda</small><strong>124,30 kg</strong></div></div><p class="note">Teorik: 1 sa 45 dk · Gerçek: 5 sa 36 dk</p></div><div id="dayList"><div class="tbl"><table><thead><tr><th>Kesim programı</th><th>Adet</th><th>Net kg</th><th>Hurda kg</th><th>Gerçek süre</th><th>İşlem</th></tr></thead><tbody><tr><td class="">c323phsr<div class="note"></div></td><td class="num">1</td><td class="num">265,14</td><td class="num">86,12</td><td class="num">1 sa 00 dk</td><td class=""><button class="btn alt tiny" onclick="editEntry('mw8vrogv3lf2fbjv')">Düzenle</button> <button class="btn warn tiny" onclick="removeEntry('mw8vrogv3lf2fbjv')">Sil</button></td></tr><tr><td class="">1000tek<div class="note"></div></td><td class="num">23</td><td class="num">2.831,99</td><td class="num">38,18</td><td class="num">4 sa 36 dk</td><td class=""><button class="btn alt tiny" onclick="editEntry('mw8w4m8wpuxbawqg')">Düzenle</button> <button class="btn warn tiny" onclick="removeEntry('mw8w4m8wpuxbawqg')">Sil</button></td></tr></tbody></table></div></div></div></div></section>
+<section class="view" id="reportView"><div class="card"><div class="toolbar noprint"><div><h2>Rapor merkezi</h2><p class="desc">İstenilen ay veya gün için ayrıntılı kontrol raporu ve PDF çıktısı.</p></div><div class="filter"><div class="field"><label>Rapor türü</label><select id="reportType"><option value="month">Aylık</option><option value="day">Günlük</option></select></div><div class="field" id="monthFilterWrap"><label>Ay</label><input id="reportMonth" type="month"/></div><div class="field" id="dateFilterWrap" style="display:none"><label>Gün</label><input id="reportDate" type="date"/></div><button class="btn dark" id="printReport" type="button">PDF olarak kaydet / Yazdır</button><button class="btn alt" id="csvExport" type="button">Rapor CSV indir</button></div></div></div><div class="card reportPaper" id="reportPaper"><div class="printOnly" style="font-size:17px;font-weight:800;color:#143b54;margin-bottom:12px">CBS · SAC KESİM &amp; FİRE TAKİP</div><div class="reporthead"><div><h2 id="reportTitle">Aylık Sac Kesim ve Fire Raporu</h2><div class="meta" id="reportSub">Dönem: 2026-11 · Kayıtlı gerçekleşen işler: 4 · Oluşturma tarihi: 2026-11-09</div></div><div class="meta">İşlenen sac · Net ürün · Hurda · Kullanılabilir sac</div></div><div id="reportContent"><div class="statline" style="margin:16px 0"><div class="ministat"><small>Kesime giren sac</small><strong>4,016 ton</strong></div><div class="ministat"><small>Net kesilen ürün</small><strong>3,658 ton</strong></div><div class="ministat"><small>Hurda metal</small><strong>0,305 ton</strong></div><div class="ministat"><small>Kullanılabilir sac</small><strong>0,053 ton</strong></div><div class="ministat"><small>Kesilen levha</small><strong>27 adet</strong></div><div class="ministat"><small>Hurda oranı</small><strong>%7,61</strong></div><div class="ministat"><small>Teorik süre</small><strong>2 sa 48 dk</strong></div><div class="ministat"><small>Gerçek süre</small><strong>8 sa 11 dk</strong></div></div><h3>Kesim işleri / günlere göre detay</h3><div class="tbl"><table><thead><tr><th>Tarih</th><th>Kesim işi</th><th>MPG</th><th>Levha</th><th>Sac kg</th><th>Net ürün kg</th><th>Hurda kg</th><th>Kullanılabilir kg</th><th>Teorik</th><th>Gerçek</th></tr></thead><tbody><tr><td class="">2026-11-05</td><td class="">c323phsr</td><td class="">c323phsr.mpg</td><td class="num">1</td><td class="num">355,33</td><td class="num">265,14</td><td class="num">86,12</td><td class="num">4,07</td><td class="num">0 sa 26 dk</td><td class="num">1 sa 00 dk</td></tr><tr><td class="">2026-11-05</td><td class="">1000tek</td><td class="">1000tek.mpg</td><td class="num">23</td><td class="num">2.910,65</td><td class="num">2.831,99</td><td class="num">38,18</td><td class="num">40,48</td><td class="num">1 sa 19 dk</td><td class="num">4 sa 36 dk</td></tr><tr><td class="">2026-11-06</td><td class="">c323phsr</td><td class="">c323phsr.mpg</td><td class="num">2</td><td class="num">710,66</td><td class="num">530,28</td><td class="num">172,24</td><td class="num">8,14</td><td class="num">0 sa 52 dk</td><td class="num">2 sa 00 dk</td></tr><tr><td class="">2026-11-06</td><td class="">fujikay</td><td class="">fujikay.mpg</td><td class="num">1</td><td class="num">39,35</td><td class="num">30,11</td><td class="num">8,88</td><td class="num">0,36</td><td class="num">0 sa 12 dk</td><td class="num">0 sa 35 dk</td></tr></tbody></table></div><p class="note">Kaynak: AJAN kesim planları ve gün sonu operatör tarafından bildirilen gerçekleşen levha adetleri. Parça/hurda ağırlıkları PDF planının levha başına verilerinden hesaplanır. Teorik süre AJAN tahminidir; gerçek süre elle girilmiştir. Kullanılabilir parçaların tekrar kesiminde olası çift sayımlar ayrıca kontrol edilmelidir.</p></div></div></section>
+<section class="view active" id="backup"><div class="card"><h2>Veri güvenliği ve taşınabilir kayıt</h2><p class="desc">Veriler otomatik olarak bu tarayıcıda saklanır. Başka bilgisayara taşımak için mutlaka <b>kayıtlarla birlikte HTML kaydet</b> veya JSON yedeğini indir.</p><div class="actions"><button class="btn good" id="portableSave">Kayıtlarla birlikte HTML kaydet</button><button class="btn alt" id="jsonSave">JSON veri yedeği indir</button><label class="btn alt" style="cursor:pointer">JSON yedeği yükle <input accept=".json,application/json" hidden="" id="jsonLoad" type="file"/></label></div><div class="message" id="backInfo"><b>5</b> kesim programı, <b>5</b> günlük gerçekleşme kaydı bulunuyor. <b>JSON / taşınabilir HTML</b> yedeği alarak güvenceye al.</div><h3>Kayıt kuralları</h3><p class="desc">Aynı program tekrar kullanılabilir. Giriş yapılan levha sayısı planı aşarsa uyarı verilir. Günlük ve aylık raporlar yalnız gerçekleşmiş kesimlerden oluşturulur. Fire hesabı AJAN raporundaki hurda ile yeniden kullanılabilir sacı ayrı gösterir. Aynı stok sac parçasının ikinci kez kesilmesi gerektiğinde raporda çift sayım oluşmaması için ayrıca kontrol edilmelidir.</p></div></section>
+</main><div id="toast" style="display: none;">Günlük gerçekleşme kaydedildi</div><script id="cbsSeed" type="application/json">{"orders":[],"entries":[]}</script><script>
+'use strict';
+const KEY='CBS_KESIM_TAKIP_V1';const $=id=>document.getElementById(id);const val=id=>$(id).value;const num=id=>Number(val(id));const today=()=>new Date().toLocaleDateString('en-CA');const month=()=>today().slice(0,7);const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const nf=(n,k=2)=>Number(n||0).toLocaleString('tr-TR',{minimumFractionDigits:k,maximumFractionDigits:k});const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,10);
+const empty=()=>({orders:[],entries:[]});let seed=empty();try{seed=JSON.parse($('cbsSeed').textContent)}catch(e){}let state=seed;let selectedPDF=null;
+function persist(){if(!window.cbsSacLoaded){toast('Veriler yüklenmeden kayıt yapılamaz.');return;}const snapshot=JSON.parse(JSON.stringify(state));window.parent.cbsSacSave(snapshot).catch(e=>{toast('Kayıt başarısız: '+e.message);alert('Supabase kaydı başarısız. Veri kaybını önlemek için JSON yedeği alın. '+e.message);});}function toast(m){let t=$('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',3500)}
+function duration(s){let a=String(s||'').trim().split(':');if(a.length!==2||!a.every(v=>/^\d+$/.test(v)))return NaN;return Number(a[0])*60+Number(a[1]);} // Bir levhada dk:sn; günlük gerçek sürede sa:dk aynı sayısal dönüşüm
+function minToHm(m){let x=Math.max(0,Math.round(m||0));return Math.floor(x/60)+' sa '+String(x%60).padStart(2,'0')+' dk'}
+function dxfTime(s){let a=String(s||'').trim().split(':');if(a.length===3 && a.every(v=>/^\d+$/.test(v)))return Number(a[0])*60+Number(a[1])+Number(a[2])/60; if(a.length===2&&a.every(v=>/^\d+$/.test(v)))return Number(a[0])+Number(a[1])/60;return NaN}
+function metrics(entries){let out={count:0,sheet:0,parts:0,scrap:0,reuse:0,theory:0,actual:0};for(const e of entries){let o=state.orders.find(x=>x.id===e.orderId);if(!o)continue;let q=Number(e.qty);out.count+=q;out.sheet+=q*o.sheet;out.parts+=q*o.parts;out.scrap+=q*o.scrap;out.reuse+=q*o.reuse;out.theory+=q*o.theory;out.actual+=e.actual;}return out}
+function sumsFor(o){return state.entries.filter(e=>e.orderId===o.id).reduce((a,e)=>a+e.qty,0)}function status(o){let done=sumsFor(o);return done>=o.planned?'<span class="tag">Tamamlandı</span>':done?'<span class="tag partial">Devam ediyor</span>':'<span class="tag wait">Başlamadı</span>'}
+function table(headers,rows){return '<div class="tbl"><table><thead><tr>'+headers.map(h=>'<th>'+h+'</th>').join('')+'</tr></thead><tbody>'+rows.join('')+'</tbody></table></div>'}function td(t,c=''){return '<td class="'+c+'">'+t+'</td>'}
+function overview(){let m=val('dashMonth');let entries=state.entries.filter(e=>e.date.startsWith(m));let s=metrics(entries);$('dashKpi').innerHTML=[['Kesilen sac',(s.sheet/1000).toLocaleString('tr-TR',{maximumFractionDigits:3})+' ton'],['Net ürün',(s.parts/1000).toLocaleString('tr-TR',{maximumFractionDigits:3})+' ton'],['Hurda',(s.scrap/1000).toLocaleString('tr-TR',{maximumFractionDigits:3})+' ton'],['Levha sayısı',nf(s.count,0)+' adet']].map(x=>'<div class="kpi"><span>'+x[0]+'</span><strong>'+x[1]+'</strong><small>'+m+'</small></div>').join('');let p=s.sheet||1;let diff=s.sheet-(s.parts+s.scrap+s.reuse);$('distribution').innerHTML='<div class="stack"><div style="width:'+s.parts/p*100+'%;background:#188d79"></div><div style="width:'+s.reuse/p*100+'%;background:#e4ac54"></div><div style="width:'+s.scrap/p*100+'%;background:#c55d59"></div></div><div class="legend"><span><i class="dot" style="background:#188d79"></i>Net ürün '+nf(s.parts)+' kg</span><span><i class="dot" style="background:#e4ac54"></i>Kullanılabilir '+nf(s.reuse)+' kg</span><span><i class="dot" style="background:#c55d59"></i>Hurda '+nf(s.scrap)+' kg</span></div><p class="note">Hurda oranı: %'+nf(s.sheet?s.scrap/s.sheet*100:0,1)+' · Teorik '+minToHm(s.theory)+' / Gerçek '+minToHm(s.actual)+(Math.abs(diff)>1?'<br>Kaynak raporları toplamında ağırlık yuvarlama/bakiye farkı: '+nf(diff)+' kg':'')+'</p>';
+$('progress').innerHTML=state.orders.length?state.orders.slice().reverse().slice(0,7).map(o=>{let d=sumsFor(o);return '<div class="barrow"><div class="barlabel"><b>'+safe(o.name)+'</b><span>'+nf(d,0)+' / '+nf(o.planned,0)+' levha</span></div><div class="barTrack"><div class="barFill" style="width:'+Math.min(100,d/o.planned*100)+'%"></div></div></div>'}).join(''):'<div class="empty">Henüz kesim programı yok</div>';let recent=state.entries.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,12);$('recent').innerHTML=recent.length?table(['Tarih','Kesim programı','Levha','Kesime giren sac','Hurda','Gerçek süre'],recent.map(e=>{let o=state.orders.find(x=>x.id===e.orderId);return '<tr>'+td(e.date)+td(safe(o?.name||'Silinmiş iş'))+td(e.qty,'num')+td(nf(e.qty*(o?.sheet||0))+' kg','num')+td(nf(e.qty*(o?.scrap||0))+' kg','num')+td(minToHm(e.actual),'num')+'</tr>'})):'<div class="empty">Bu dönemde gerçekleşmiş kesim bulunmuyor</div>'}
+// AJAN çelik levha raporları için kullanılan yaklaşık yoğunluk 7,87 g/cm³.
+// PDF'de açıkça okunan ağırlık önceliklidir, manuel düzenleme korunur.
+let sheetMassAutoValue='';
+function cbsDensity(){
+ const d=Number(String($('sheetDensity').value||'').replace(',','.'));
+ return Number.isFinite(d)&&d>0?d:null;
+}
+function cbsSuggestDensity(){
+ const m=String($('material').value||'').trim().toUpperCase().replace(/\s+/g,'');
+ const stainless=/(?:AISI30[4-9]|30[4-9]L|316L|PASLANMAZ)/i.test(m);
+ const steel=/(?:P355|S235|S355|ST37|ST52|DKP|DC0[134]|MILDSTEEL|CELIK|ÇELİK)/i.test(m);
+ if(stainless)return 7.93;
+ if(steel)return 7.87;
+ return null;
+}
+
+function derivedSheetMass(){
+ const a=Number(val('length')),b=Number(val('width')),t=Number(val('thick'));
+ const density=cbsDensity();
+ if(!(a>0&&b>0&&t>0&&density>0))return null;
+ return {value:Math.round((a*b*t*density/1000000)*1000)/1000,density};
+}
+function updateSheetMass(force=false){
+ const calc=derivedSheetMass(),input=$('sheetMass'),hint=$('sheetMassHint');
+ if(!calc){if(hint)hint.textContent='Levha ağırlığını otomatik hesaplamak için ölçüler, kalınlık ve malzeme türü gerekli.';return}
+ const value=String(calc.value);
+ const wasAutomatic=input.value===''||input.value===sheetMassAutoValue;
+ if(force||wasAutomatic){input.value=value;sheetMassAutoValue=value;if(hint)hint.textContent='AJAN hesabı: Boy × En × Kalınlık × '+calc.density.toLocaleString('tr-TR')+' / 1.000.000 = '+value.replace('.',',')+' kg. Elle düzeltebilirsin.';weightCheck()}
+ else if(hint)hint.textContent='Levha kg alanında PDF’den okunan veya elle girilen değer korunuyor. Ölçülere göre hesap: '+calc.value.toLocaleString('tr-TR')+' kg.';
+}
+['length','width','thick','material'].forEach(id=>{ $(id).addEventListener('input',()=>updateSheetMass());$(id).addEventListener('change',()=>updateSheetMass()); });
+
+// Levha ağırlığı alanı boş kaldığında doğrudan hesapla; DOM input event'i gerektirmez.
+function ensureSheetMass(){
+ const field=$('sheetMass');
+ if(String(field.value).trim()!=='')return;
+ const L=parseFloat(String($('length').value).replace(',','.'));
+ const W=parseFloat(String($('width').value).replace(',','.'));
+ const T=parseFloat(String($('thick').value).replace(',','.'));
+ const mat=String($('material').value||'').toUpperCase();
+ if(!(L>0&&W>0&&T>0))return;
+ const steel=/(P355|S235|S355|ST37|ST52|DKP|DC0[134]|MILD\s*STEEL|ÇELİK|CELIK)/i.test(mat);
+ const stainless=/(AISI\s*30[4-9]|30[4-9]L|316L|PASLANMAZ)/i.test(mat);
+ if(!steel&&!stainless)return;
+ const density=stainless?7.93:7.87;
+ const mass=Math.round(L*W*T*density/1e6*1000)/1000;
+ if(Number.isFinite(mass)&&mass>0){field.value=String(mass);sheetMassAutoValue=field.value;
+ const hint=$('sheetMassHint');if(hint)hint.textContent='Ölçülerden otomatik hesap: '+mass.toLocaleString('tr-TR',{maximumFractionDigits:3})+' kg ('+density.toLocaleString('tr-TR')+' g/cm³).';
+ weightCheck();}
+}
+// Tarayıcının required kontrolü submit olayından önce gerçekleşir: click anında alanı doldur.
+const orderSubmitButton=$('orderForm').querySelector('button[type="submit"]');
+if(orderSubmitButton)orderSubmitButton.addEventListener('click',ensureSheetMass,{capture:true});
+$('orderForm').addEventListener('invalid',e=>{if(e.target.id==='sheetMass')ensureSheetMass()},true);
+
+$('sheetMass').addEventListener('input',()=>{sheetMassAutoValue='';updateSheetMass()});
+
+// Bağımsız, doğrudan kullanıcı tıklamasıyla çalışan kesin hesaplama.
+$('manualMassCalculate').addEventListener('click',function(){
+ const calc=derivedSheetMass();
+ if(!calc){alert('Önce levha boyu, eni, kalınlığı ve yoğunluk değerlerini kontrol edin.');return}
+ const parts=Number(String($('partsMass').value||'').replace(',','.'));
+ if(!Number.isFinite(parts)||parts<0||$('partsMass').value.trim()===''){
+   alert('Önce PDF’den gelen net parça kg değerini kontrol edin.');return;
+ }
+ if(parts>calc.value+.002){alert('Net parça ağırlığı levha ağırlığından büyük. Verileri kontrol edin.');return;}
+ $('sheetMass').value=calc.value.toFixed(3);
+ $('scrapMass').value=(Math.max(0,calc.value-parts)).toFixed(3);
+ $('reuseMass').value='0';
+ sheetMassAutoValue=$('sheetMass').value;
+ $('sheetMassHint').textContent='Boy × en × kalınlık × yoğunluk / 1.000.000 = '+calc.value.toLocaleString('tr-TR',{minimumFractionDigits:3})+' kg.';
+ weightCheck();
+});
+$('sheetDensity').addEventListener('input',()=>{sheetMassAutoValue='';updateSheetMass(true)});
+$('material').addEventListener('change',()=>{
+ const suggested=cbsSuggestDensity();
+ if(suggested!==null){$('sheetDensity').value=String(suggested);updateSheetMass(true)}
+});
+
+function weightCheck(){let ids=['sheetMass','partsMass','scrapMass','reuseMass'];let values=ids.map(x=>num(x));let ok=values.every(Number.isFinite);let d=values[0]-values[1]-values[2]-values[3];$('massCheck').className='message'+(ok&&Math.abs(d)>0.15?' warn':'');$('massCheck').textContent=ok?'Levha denge farkı: '+nf(d,3)+' kg '+(Math.abs(d)>0.15?'— AJAN verilerini kontrol edin.':'— değerler uyumlu.'):'Levha ağırlığı denge kontrolü için bütün alanları doldurun.';return d}
+['sheetMass','partsMass','scrapMass','reuseMass'].forEach(x=>$(x).addEventListener('input',weightCheck));
+function clearOrder(){sheetMassAutoValue='';$('orderForm').reset();$('orderId').value='';$('orderDate').value=today();selectedPDF=null;$('openPdf').disabled=true;$('retryPdf').disabled=true;$('pdfReadStatus').textContent='PDF seçildiğinde otomatik okuma başlar.';$('massCheck').textContent='Levha ağırlığı dengesi kontrol edilecek.'}
+$('orderClear').onclick=clearOrder;$('pdfFile').addEventListener('change',async e=>{
+ ++ajanReadToken;
+ selectedPDF=e.target.files[0]||null;
+ $('openPdf').disabled=!selectedPDF;$('retryPdf').disabled=!selectedPDF;
+ if(!selectedPDF)return;
+ const base=selectedPDF.name.replace(/\.pdf$/i,'');
+ $('jobName').value=base;$('mpgName').value=base+'.mpg';
+ // Previous PDF's parsed fields must not persist into a new order.
+ sheetMassAutoValue='';
+ ['jobNo','planned','length','width','thick','material','theory','sheetMass','partsMass','scrapMass','reuseMass'].forEach(id=>$(id).value='');
+ await readAjanPdf(selectedPDF);
+});$('retryPdf').onclick=()=>selectedPDF&&readAjanPdf(selectedPDF);
+$('openPdf').onclick=()=>{if(selectedPDF){const u=URL.createObjectURL(selectedPDF);window.open(u,'_blank');setTimeout(()=>URL.revokeObjectURL(u),60000)}};
+$('orderForm').onsubmit=e=>{e.preventDefault();updateSheetMass();ensureSheetMass();let theory=dxfTime(val('theory')),planned=num('planned'),sheet=num('sheetMass'),parts=num('partsMass'),scrap=num('scrapMass'),reuse=num('reuseMass');if(!(Number.isFinite(theory)&&theory>0)){alert('Teorik süreyi 18:33 biçiminde gir (dakika:saniye).');return}if(!(planned>0&&Number.isInteger(planned)&&[sheet,parts,scrap,reuse].every(x=>Number.isFinite(x)&&x>=0)&&sheet>0)){alert('Adet ve ağırlık alanlarını kontrol edin.');return}if(Math.abs(sheet-parts-scrap-reuse)>Math.max(.25,sheet*.001)&&!confirm('Levha ağırlığı dengesi uyuşmuyor. Yine de kaydedilsin mi?'))return;let id=val('orderId')||uid(),o={id,name:val('jobName').trim(),mpg:val('mpgName').trim(),no:val('jobNo').trim(),planned,length:num('length'),width:num('width'),thick:num('thick'),material:val('material'),sheet,parts,scrap,reuse,theory,pdfName:selectedPDF?.name||state.orders.find(x=>x.id===id)?.pdfName||'',date:val('orderDate'),notes:val('jobNotes')};let idx=state.orders.findIndex(x=>x.id===id);if(idx>=0){let old=state.orders[idx];if(sumsFor(old)>planned){alert('Planlanan levha, gerçekleşen kesimden küçük olamaz.');return}state.orders[idx]=o}else state.orders.push(o);persist();clearOrder();refresh();toast('Kesim programı kaydedildi')};
+function editOrder(id){let o=state.orders.find(x=>x.id===id);if(!o)return;show('orders');const map={orderId:o.id,jobName:o.name,mpgName:o.mpg,jobNo:o.no,planned:o.planned,length:o.length,width:o.width,thick:o.thick,material:o.material,theory:Math.floor(o.theory)+':'+String(Math.round((o.theory%1)*60)).padStart(2,'0'),sheetMass:o.sheet,partsMass:o.parts,scrapMass:o.scrap,reuseMass:o.reuse,orderDate:o.date,jobNotes:o.notes};Object.entries(map).forEach(([k,v])=>$(k).value=v??'');selectedPDF=null;sheetMassAutoValue='';$('openPdf').disabled=true;weightCheck();window.scrollTo({top:0,behavior:'smooth'})}
+function removeOrder(id){let o=state.orders.find(x=>x.id===id);if(!o)return;if(state.entries.some(e=>e.orderId===id)){alert('Bu programda gerçekleşmiş kesimler var. Silmeden önce kayıtları düzelt.');return}if(confirm('Kesim programı silinsin mi?')){state.orders=state.orders.filter(x=>x.id!==id);persist();refresh()}}
+function quickDaily(id){
+ const o=state.orders.find(x=>x.id===id);if(!o)return;
+ show('daily');
+ clearEntry();
+ $('entryJob').value=o.id;
+ $('entryDate').value=today();
+ $('dayFilter').value=today();
+ const left=Math.max(0,o.planned-sumsFor(o));
+ $('entryQty').value=left>0?'1':'0';
+ entryPreview();renderDaily();
+ $('entryQty').focus();
+}
+function renderOrders(){let q=val('orderSearch').toLocaleLowerCase('tr-TR');let arr=state.orders.filter(o=>(o.name+' '+o.mpg+' '+o.no+' '+o.pdfName).toLocaleLowerCase('tr-TR').includes(q)).slice().reverse();$('orderList').innerHTML=arr.length?table(['Program / PDF','Planlanan','Kesilen','Kalan','Durum','İşlem'],arr.map(o=>'<tr>'+td('<b>'+safe(o.name)+'</b><div class="note">'+safe(o.mpg||o.pdfName||o.no)+'</div>')+td(o.planned,'num')+td(sumsFor(o),'num')+td(Math.max(0,o.planned-sumsFor(o)),'num')+td(status(o))+td('<button class="btn good tiny" onclick="quickDaily(\''+o.id+'\')">Günlük kesim gir</button> <button class="btn alt tiny" onclick="editOrder(\''+o.id+'\')">Düzenle</button> <button class="btn warn tiny" onclick="removeOrder(\''+o.id+'\')">Sil</button>')+'</tr>')):'<div class="empty">Kayıtlı kesim programı bulunmuyor</div>'}
+$('orderSearch').oninput=renderOrders;
+function clearEntry(){$('dailyForm').reset();$('entryId').value='';$('entryDate').value=val('dayFilter')||today();entryPreview()};$('entryClear').onclick=clearEntry;
+function jobsSelect(){let current=val('entryJob');$('entryJob').innerHTML='<option value="">Kesim programı seç</option>'+state.orders.map(o=>'<option value="'+o.id+'">'+safe(o.name)+' — '+safe(o.mpg)+'</option>').join('');if(state.orders.some(o=>o.id===current))$('entryJob').value=current}
+function entryPreview(){let o=state.orders.find(x=>x.id===val('entryJob'));if(!o){$('entryPreview').textContent='Programı seçtiğinde kalan miktar ve beklenen net ürün/hurda hesaplanacak.';return}let q=Number(val('entryQty'))||0;let other=state.entries.filter(e=>e.orderId===o.id&&e.id!==val('entryId')).reduce((a,e)=>a+e.qty,0);$('entryPreview').innerHTML='<b>Kalan iş:</b> '+(o.planned-other)+' levha · <b>Bu giriş sonrası kalan:</b> '+(o.planned-other-q)+' levha<br><b>Net parça:</b> '+nf(q*o.parts)+' kg · <b>Hurda:</b> '+nf(q*o.scrap)+' kg · <b>Teorik:</b> '+minToHm(q*o.theory)}
+['entryJob','entryQty','entryId'].forEach(x=>$(x).addEventListener('input',entryPreview));
+$('dailyForm').onsubmit=e=>{e.preventDefault();let o=state.orders.find(x=>x.id===val('entryJob')),q=num('entryQty'),actual=duration(val('actualTime'));if(!o||!Number.isInteger(q)||q<=0){alert('Kesim programı ve pozitif tam levha sayısı gerekli.');return}if(!Number.isFinite(actual)||actual<=0){alert('Gerçek süreyi saat:dakika biçiminde gir. Örnek: 2:45');return}let id=val('entryId')||uid(),other=state.entries.filter(e=>e.orderId===o.id&&e.id!==id).reduce((a,e)=>a+e.qty,0);if(q+other>o.planned){alert('Toplam gerçekleşen levha planlanan '+o.planned+' adedi aşamaz. Kalan: '+(o.planned-other));return}let entry={id,orderId:o.id,date:val('entryDate'),qty:q,actual,note:val('entryNote')};let at=state.entries.findIndex(e=>e.id===id);if(at>=0)state.entries[at]=entry;else state.entries.push(entry);persist();$('dayFilter').value=entry.date;clearEntry();refresh();toast('Günlük gerçekleşme kaydedildi')};
+function editEntry(id){let e=state.entries.find(x=>x.id===id);if(!e)return;show('daily');$('entryId').value=e.id;$('entryJob').value=e.orderId;$('entryDate').value=e.date;$('entryQty').value=e.qty;$('actualTime').value=Math.floor(e.actual/60)+':'+String(e.actual%60).padStart(2,'0');$('entryNote').value=e.note;entryPreview()}
+function removeEntry(id){if(!confirm('Günlük gerçekleşme kaydı silinsin mi?'))return;state.entries=state.entries.filter(e=>e.id!==id);persist();refresh()}
+function renderDaily(){let day=val('dayFilter'),entries=state.entries.filter(e=>e.date===day),s=metrics(entries);$('daySummary').innerHTML='<div class="statline"><div class="ministat"><small>Kesilen levha</small><strong>'+s.count+'</strong></div><div class="ministat"><small>Kesilen sac</small><strong>'+nf(s.sheet)+' kg</strong></div><div class="ministat"><small>Hurda</small><strong>'+nf(s.scrap)+' kg</strong></div></div><p class="note">Teorik: '+minToHm(s.theory)+' · Gerçek: '+minToHm(s.actual)+'</p>';$('dayList').innerHTML=entries.length?table(['Kesim programı','Adet','Net kg','Hurda kg','Gerçek süre','İşlem'],entries.map(e=>{let o=state.orders.find(x=>x.id===e.orderId);return '<tr>'+td(safe(o?.name||'?')+'<div class="note">'+safe(e.note)+'</div>')+td(e.qty,'num')+td(nf(e.qty*(o?.parts||0)),'num')+td(nf(e.qty*(o?.scrap||0)),'num')+td(minToHm(e.actual),'num')+td('<button class="btn alt tiny" onclick="editEntry(\''+e.id+'\')">Düzenle</button> <button class="btn warn tiny" onclick="removeEntry(\''+e.id+'\')">Sil</button>')+'</tr>'})):'<div class="empty">Bu tarihte kayıt yok</div>'};$('dayFilter').onchange=renderDaily;
+function reportEntries(){return state.entries.filter(e=>val('reportType')==='month'?e.date.startsWith(val('reportMonth')):e.date===val('reportDate'))}
+function report(){let entries=reportEntries(),s=metrics(entries),scope=val('reportType')==='month'?val('reportMonth'):val('reportDate');$('reportTitle').textContent=(val('reportType')==='month'?'Aylık':'Günlük')+' Sac Kesim ve Fire Raporu';$('reportSub').textContent='Dönem: '+scope+' · Kayıtlı gerçekleşen işler: '+entries.length+' · Oluşturma tarihi: '+today();let kpis=[['Kesime giren sac',nf(s.sheet/1000,3)+' ton'],['Net kesilen ürün',nf(s.parts/1000,3)+' ton'],['Hurda metal',nf(s.scrap/1000,3)+' ton'],['Kullanılabilir sac',nf(s.reuse/1000,3)+' ton'],['Kesilen levha',s.count+' adet'],['Hurda oranı','%'+nf(s.sheet?s.scrap/s.sheet*100:0,2)],['Teorik süre',minToHm(s.theory)],['Gerçek süre',minToHm(s.actual)]];$('reportContent').innerHTML='<div class="statline" style="margin:16px 0">'+kpis.map(k=>'<div class="ministat"><small>'+k[0]+'</small><strong>'+k[1]+'</strong></div>').join('')+'</div><h3>Kesim işleri / günlere göre detay</h3>'+(entries.length?table(['Tarih','Kesim işi','MPG','Levha','Sac kg','Net ürün kg','Hurda kg','Kullanılabilir kg','Teorik','Gerçek'],entries.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(e=>{let o=state.orders.find(x=>x.id===e.orderId);return '<tr>'+td(e.date)+td(safe(o?.name||'?'))+td(safe(o?.mpg||''))+td(e.qty,'num')+td(nf(e.qty*(o?.sheet||0)),'num')+td(nf(e.qty*(o?.parts||0)),'num')+td(nf(e.qty*(o?.scrap||0)),'num')+td(nf(e.qty*(o?.reuse||0)),'num')+td(minToHm(e.qty*(o?.theory||0)),'num')+td(minToHm(e.actual),'num')+'</tr>'})):'<p>Bu dönemde gerçekleşen kesim yok.</p>')+'<p class="note">Kaynak: AJAN kesim planları ve gün sonu operatör tarafından bildirilen gerçekleşen levha adetleri. Parça/hurda ağırlıkları PDF planının levha başına verilerinden hesaplanır. Teorik süre AJAN tahminidir; gerçek süre elle girilmiştir. Kullanılabilir parçaların tekrar kesiminde olası çift sayımlar ayrıca kontrol edilmelidir.</p>';}
+$('reportType').onchange=()=>{$('monthFilterWrap').style.display=val('reportType')==='month'?'':'none';$('dateFilterWrap').style.display=val('reportType')==='day'?'':'none';report()};$('reportMonth').onchange=report;$('reportDate').onchange=report;$('printReport').onclick=()=>{report();window.print()};
+function download(name,content,type){let blob=new Blob([content],{type}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),2000)}
+$('csvExport').onclick=()=>{let rows=[['Tarih','Kesim işi','MPG','Levha','Sac kg','Net kg','Hurda kg','Kullanılabilir kg','Teorik dk','Gerçek dk']];for(const e of reportEntries()){let o=state.orders.find(x=>x.id===e.orderId);rows.push([e.date,o?.name||'',o?.mpg||'',e.qty,e.qty*(o?.sheet||0),e.qty*(o?.parts||0),e.qty*(o?.scrap||0),e.qty*(o?.reuse||0),e.qty*(o?.theory||0),e.actual])}let csv='\ufeff'+rows.map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(';')).join('\r\n');download('CBS_Kesim_Raporu_'+(val('reportType')==='month'?val('reportMonth'):val('reportDate'))+'.csv',csv,'text/csv;charset=utf-8')};
+$('jsonSave').onclick=()=>download('CBS_Kesim_Kayit_Yedegi_'+today()+'.json',JSON.stringify(state,null,2),'application/json');
+$('jsonLoad').onchange=async e=>{let f=e.target.files?.[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!d||!Array.isArray(d.orders)||!Array.isArray(d.entries))throw Error('Geçersiz yedek');if(confirm('Mevcut kayıtlar yedekle değiştirilsin mi? Önce kendi JSON yedeğini almanı öneririm.')){state=d;persist();refresh();toast('Yedek yüklendi')}}catch(err){alert('Yedek okunamadı: '+err.message)}e.target.value=''};
+$('portableSave').onclick=()=>{let clone=document.documentElement.cloneNode(true);let seedEl=clone.querySelector('#cbsSeed');seedEl.textContent=JSON.stringify(state).replace(/</g,'\\u003c').replace(/>/g,'\\u003e');download('CBS_Sac_Kesim_Takip_Kayitli_'+today()+'.html','<!doctype html>\n'+clone.outerHTML,'text/html;charset=utf-8')};
+function show(view){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===view));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.view===view));if(view==='reportView')report();window.scrollTo({top:0})}document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>show(b.dataset.view));
+function refresh(){jobsSelect();renderOrders();overview();renderDaily();report();$('backInfo').innerHTML='<b>'+state.orders.length+'</b> kesim programı, <b>'+state.entries.length+'</b> günlük gerçekleşme kaydı bulunuyor. <b>JSON / taşınabilir HTML</b> yedeği alarak güvenceye al.'}
+$('dashMonth').value=month();$('reportMonth').value=month();$('reportDate').value=today();$('dayFilter').value=today();$('entryDate').value=today();$('orderDate').value=today();refresh();
+
+// AJAN PDF data assistant: reads text PDFs and image-only reports via PDF.js + Tesseract (requires internet).
+// The user always confirms the extracted fields. Existing calculation / record functions are untouched.
+let ajanReadToken=0;
+function ajanNotice(message){$('pdfReadStatus').textContent=message}
+function scriptOnce(url,flag){return new Promise((resolve,reject)=>{
+ if(window[flag])return resolve();
+ const exists=[...document.scripts].find(x=>x.src===url);
+ if(exists)exists.remove();
+ const tag=document.createElement('script');tag.src=url;tag.onload=resolve;tag.onerror=()=>{tag.remove();reject(Error('PDF okuma kütüphanesine erişilemedi'))};document.head.appendChild(tag);
+})}
+function ajanSet(id,value){if(value===undefined||value===null||value==='')return false;$(id).value=value;return true}
+function ajanNumber(s){if(!s)return NaN;let a=String(s).trim().replace(/\s+/g,'');if(a.includes(',')&&a.includes('.')){a=a.lastIndexOf(',')>a.lastIndexOf('.')?a.replace(/\./g,'').replace(',','.'):a.replace(/,/g,'')}else if(a.includes(','))a=a.replace(',','.');return Number(a)}
+function ajanExtract(raw){
+ const t=String(raw||'').replace(/\r/g,'').replace(/[|]/g,' ');
+ const found=[];
+ function take(id,val,what){if(val===undefined||val===null||val==='')return;if(ajanSet(id,val)){found.push(what);if(['length','width','thick','material'].includes(id))updateSheetMass();}}
+ let m=t.match(/(?:File\s*Name|Dosya\s*Ad[ıi])\s*[:\-]?\s*([\w().-]+\.mpg)/i);
+ if(m){const pdfBase=selectedPDF?.name.replace(/\.pdf$/i,'');if(!pdfBase||m[1].replace(/\.mpg$/i,'').toLowerCase()===pdfBase.toLowerCase())take('mpgName',m[1],'AJAN MPG adı')}
+ m=t.match(/(?:Sheet\s*Size|Sac\s*Ölçüsü)\s*[:\-]?\s*(\d{3,5})\s*[xX×]\s*(\d{3,5})/i);
+ if(m){take('length',m[1],'Levha boyu');take('width',m[2],'Levha eni')}
+ m=t.match(/(?:S[Iİ]PAR[Iİ][ŞS]\s*NO|ORDER\s*NO)\s*[:# ]+([\w\-]+)/i);if(m)take('jobNo',m[1],'Sipariş no');
+ m=t.match(/(?:Repeat\s*\(SheetNo\)|LEVHA\s*KES[Iİ]LECEK)\s*[: ]*(\d+)/i);if(m&&Number(m[1])>0)take('planned',m[1],'Plan adedi');
+ m=t.match(/\b(\d+)\s*LEVHA\s*KES[Iİ]LECEK/i);if(m)take('planned',m[1],'Plan adedi');
+ // Material grades: only those explicitly visible in the report (never infer from generic MildSteel).
+ m=t.match(/\b(P355(?:GH|NH)|S235(?:JR|J2)|S355(?:JR|J2)|DC0[134]|DKP|AISI\s*304|304L|316L|ST37|ST52)\b/i);
+ if(m)take('material',m[1].toUpperCase().replace(/\s+/g,' '),'Sac kalitesi');
+ // Thickness may be written in AJAN's header table as `Thickness (mm) 5`,
+ // or inside the job title as `Ø406X5MM`. Never read sheet dimensions as thickness.
+ const thicknessPatterns=[
+  /(?:Thickness|Thickn[eé]ss|Kal[ıi]nl[ıi]k)\s*(?:\(\s*m\s*m\s*\)|\bmm\b)?\s*[:=|]?\s*(\d{1,2}(?:[.,]\d{1,2})?)\b/i,
+  /[Ø⌀]\s*\d{2,5}\s*[xX×*]\s*(\d{1,2}(?:[.,]\d{1,2})?)\s*m\s*m\b/i,
+  /\b\d{3,5}\s*[xX×*]\s*(\d{1,2}(?:[.,]\d{1,2})?)\s*m\s*m\b/i,
+  /(?:Thickness|Kal[ıi]nl[ıi]k)[^\n]{0,32}\(\s*m\s*m\s*\)[^\n]{0,30}\n\s*(\d{1,2}(?:[.,]\d{1,2})?)\b/i
+ ];
+ for(const re of thicknessPatterns){const hit=t.match(re);if(hit){const thick=ajanNumber(hit[1]);if(thick>=0.1&&thick<=60){take('thick',thick,'Sac kalınlığı');break}}}
+
+ // AJAN's summary line is reliably anchored by "Total" followed by net mass and cutting time.
+ m=t.match(/\bTotal\s+([\d.,]+)\s+(\d{1,2}:\d{2}:\d{2})\b/i);
+ if(m){const kg=ajanNumber(m[1]);if(kg>0)take('partsMass',kg,'Net parça ağırlığı');take('theory',m[2],'Teorik kesim süresi')}
+ if(!m){m=t.match(/\b(?:Total\s+Cutting\s+Time|Cutting\s+Time|Kesim\s*Süresi)\s*[: ]+\s*(\d{1,2}:\d{2}:\d{2})/i);if(m)take('theory',m[1],'Teorik kesim süresi')}
+ // Explicitly labeled masses are safe to prefill. Unlabeled OCR row numbers are NOT.
+ const massFields=[['sheetMass',/(?:Sheet\s*Weight|Total\s*Sheet\s*Weight|Levha\s*Ağırlığı)\s*[:= ]+([\d.,]+)/i,'Levha kg'],['partsMass',/(?:Total\s*Parts\s*Weight|Net\s*Parts\s*Weight)\s*[:= ]+([\d.,]+)/i,'Net parça kg'],['scrapMass',/(?:Scrap\s*Metal\s*Weight|Scrap\s*Weight|Hurda\s*Ağırlığı)\s*[:= ]+([\d.,]+)/i,'Hurda kg'],['reuseMass',/(?:Reusable\s*Sheet\s*Weight|Reusable\s*Weight|Kullanılabilir\s*Sac)\s*[:= ]+([\d.,]+)/i,'Kullanılabilir sac kg']];
+ for(const [id,re,label] of massFields){const z=t.match(re);if(z){const kg=ajanNumber(z[1]);if(Number.isFinite(kg)&&kg>=0)take(id,kg,label)}}
+ // PDF'deki malzeme tanınıyorsa yoğunluğu seç, bilinmiyorsa kullanıcının yoğunluk girdisi geçerlidir.
+ const suggestedPdfDensity=cbsSuggestDensity();if(suggestedPdfDensity!==null)$('sheetDensity').value=String(suggestedPdfDensity);
+ updateSheetMass();
+ ensureSheetMass();
+ return found;
+}
+// V4.2: Multiple PDF readers, bounded requests, explicit failure details and per-file isolation.
+let cbsPdfLoadPromise=null;
+async function cbsLoadPdfJs(){
+ if(window.pdfjsLib)return window.pdfjsLib;
+ if(cbsPdfLoadPromise)return cbsPdfLoadPromise;
+ const sources=[
+  ['https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js','https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'],
+  ['https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js','https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js']
+ ];
+ cbsPdfLoadPromise=(async()=>{
+  let last='';
+  for(const [src,worker] of sources){
+   if(window.pdfjsLib)break;
+   let el;
+   try{
+    await new Promise((resolve,reject)=>{
+     el=document.createElement('script');el.src=src;el.async=true;
+     const timer=setTimeout(()=>{el.remove();reject(Error('bağlantı zaman aşımı'))},6500);
+     el.onload=()=>{clearTimeout(timer);resolve()};
+     el.onerror=()=>{clearTimeout(timer);reject(Error('sunucuya erişilemiyor'))};
+     document.head.appendChild(el);
+    });
+    if(!window.pdfjsLib)throw Error('kütüphane başlatılamadı');
+    pdfjsLib.GlobalWorkerOptions.workerSrc=worker;
+    return pdfjsLib;
+   }catch(e){last=e.message;el?.remove()}
+  }
+  if(window.pdfjsLib)return window.pdfjsLib;
+  throw Error('PDF.js yüklenemedi: '+last);
+ })();
+ try{return await cbsPdfLoadPromise}catch(e){cbsPdfLoadPromise=null;throw e}
+}
+// Small offline backup: extracts simple PDF text operators, including Flate-compressed streams.
+// It deliberately does not guess numbers when a PDF uses custom font encodings.
+async function cbsOfflinePdfText(file){
+ if(!('DecompressionStream' in window))throw Error('tarayıcıda çevrimdışı PDF açma desteği yok');
+ const bytes=new Uint8Array(await file.arrayBuffer());
+ const ascii=new TextDecoder('latin1').decode(bytes);
+ if(!ascii.startsWith('%PDF-'))throw Error('dosya geçerli PDF değil');
+ const out=[];
+ function pdfLiteral(z){
+  let result='';for(let i=0;i<z.length;i++){
+   if(z[i]!=='\\'){result+=z[i];continue}
+   i++;let c=z[i];if(!c)break;
+   const map={n:'\n',r:'\r',t:'\t',b:'\b',f:'\f'};
+   if(map[c])result+=map[c];
+   else if(/[0-7]/.test(c)){let oct=c;for(let k=0;k<2&&/[0-7]/.test(z[i+1]||'');k++)oct+=z[++i];result+=String.fromCharCode(parseInt(oct,8))}
+   else if(c==='\n'){}else if(c==='\r'){if(z[i+1]==='\n')i++}
+   else result+=c;
+  }return result;
+ }
+ function extractStream(st){
+  // Parenthesized Tj and TJ strings; doesn't treat arbitrary bytes as report text.
+  const ops=/(\((?:\\[\s\S]|[^\\)])*\)|<[0-9a-fA-F\s]+>)\s*(?:Tj|'|\")|\[((?:[\s\S]*?))\]\s*TJ/g;
+  let m;let chunks=[];
+  const fromToken=(v)=>{
+   if(v.startsWith('('))return pdfLiteral(v.slice(1,-1));
+   if(/^<[\da-fA-F\s]+>$/.test(v)){
+    const hex=v.slice(1,-1).replace(/\s/g,'');
+    if(hex.length%2)return '';
+    let b=new Uint8Array(hex.length/2);for(let i=0;i<b.length;i++)b[i]=parseInt(hex.slice(2*i,2*i+2),16);
+    if(b.length>1&&b[0]===0)return new TextDecoder('utf-16be').decode(b);
+    return new TextDecoder('latin1').decode(b);
+   }return '';
+  };
+  while((m=ops.exec(st))){
+   if(m[1])chunks.push(fromToken(m[1]));
+   else if(m[2]){
+    let bits=[...m[2].matchAll(/\((?:\\[\s\S]|[^\\)])*\)|<[0-9a-fA-F\s]+>/g)].map(x=>fromToken(x[0]));
+    chunks.push(bits.join(''));
+   }
+  }
+  return chunks.join(' ');
+ }
+ const marker=/\bstream\r?\n/g;let m, count=0;
+ while((m=marker.exec(ascii))&&count<300){
+  const begin=marker.lastIndex;
+  const stop=ascii.indexOf('endstream',begin);if(stop<0)break;
+  const head=ascii.slice(Math.max(0,m.index-600),m.index);
+  let content=bytes.slice(begin,stop);
+  marker.lastIndex=stop+9;count++;
+  if(!/\/FlateDecode/.test(head)&&!/\bBT\b/.test(ascii.slice(begin,Math.min(stop,begin+80))))continue;
+  try{
+   if(/\/ASCII85Decode/.test(head)){
+    // Common AJAN/ReportLab PDF filter chain: ASCII85Decode followed by FlateDecode.
+    const raw=new TextDecoder('latin1').decode(content).replace(/\s+/g,'').replace(/^<~/,'').replace(/~>.*$/s,'');
+    const decoded=[];let chunk=[];
+    for(const ch of raw){
+     if(ch==='z'&&chunk.length===0){decoded.push(0,0,0,0);continue}
+     const code=ch.charCodeAt(0)-33;if(code<0||code>84)continue;
+     chunk.push(code);
+     if(chunk.length===5){let n=0;for(const x of chunk)n=n*85+x;decoded.push((n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255);chunk=[]}
+    }
+    if(chunk.length){const count=chunk.length;while(chunk.length<5)chunk.push(84);let n=0;for(const x of chunk)n=n*85+x;for(let j=0;j<count-1;j++)decoded.push((n>>>(24-8*j))&255)}
+    content=new Uint8Array(decoded);
+   }
+   if(/\/FlateDecode/.test(head)){
+    // PDF FlateDecode uses zlib-wrapped deflate.
+    const ds=new DecompressionStream('deflate');
+    const stream=new Blob([content]).stream().pipeThrough(ds);
+    content=new Uint8Array(await new Response(stream).arrayBuffer());
+   }
+   const decoded=new TextDecoder('latin1').decode(content);
+   if(/\bBT\b/.test(decoded))out.push(extractStream(decoded));
+  }catch(e){/* Unsupported image or filter stream: continue with others. */}
+ }
+ const text=out.join('\n');
+ if(text.trim().length<35)throw Error('PDF metni çevrimdışı çözülemedi (özel yazı tipi veya görüntü PDF)');
+ return text;
+}
+async function cbsTextFromPdf(pdf,token){
+ const pages=Math.min(pdf.numPages,5);const fragments=[];
+ for(let i=1;i<=pages;i++){
+  if(token!==ajanReadToken)return '';
+  ajanNotice('AJAN PDF okunuyor: sayfa '+i+'/'+pages+'…');
+  const page=await pdf.getPage(i);
+  const content=await page.getTextContent();
+  // Reconstruct spaces between text items as PDF.js often breaks AJAN labels into tokens.
+  const pieces=[];let prev=null;
+  for(const item of content.items){
+   if(typeof item.str!=='string')continue;
+   if(prev){
+    const gap=(item.transform?.[4]??0)-((prev.transform?.[4]??0)+(prev.width??0));
+    if(item.hasEOL||prev.hasEOL||Math.abs((item.transform?.[5]??0)-(prev.transform?.[5]??0))>3)pieces.push('\n');
+    else if(gap>1.5)pieces.push(' ');
+   }
+   pieces.push(item.str);
+   if(item.hasEOL)pieces.push('\n');
+   prev=item;
+  }
+  fragments.push(pieces.join(' '));fragments.push(pieces.join(''));
+ }
+ return fragments.join('\n');
+}
+async function readAjanPdf(file){
+ const token=++ajanReadToken;
+ if(!file)return;
+ const fields=['jobNo','planned','length','width','thick','material','theory','sheetMass','partsMass','scrapMass','reuseMass'];
+ // Never copy a prior PDF's numeric fields into a new import, including edited orders.
+ fields.forEach(k=>$(k).value='');
+ cbsAjanPdfSource=false;sheetMassAutoValue='';
+ ajanNotice('PDF okunuyor… Metin okuma deneniyor.');
+ let txt='',method='',errors=[];
+ try{
+  try{
+   await cbsLoadPdfJs();
+   if(token!==ajanReadToken)return;
+   const bytes=new Uint8Array(await file.arrayBuffer());
+   const pdf=await pdfjsLib.getDocument({data:bytes,disableAutoFetch:true}).promise;
+   txt=await cbsTextFromPdf(pdf,token);method='PDF metin katmanı';
+   if(txt.trim().length<65){
+    // OCR is reserved for image-only PDFs and remains a separate online dependency.
+    try{
+     await Promise.race([scriptOnce('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js','Tesseract'),new Promise((_,rej)=>setTimeout(()=>rej(Error('OCR bağlantısı zaman aşımı')),7000))]);
+     if(token!==ajanReadToken)return;
+     const page=await pdf.getPage(1);const vp=page.getViewport({scale:2});
+     const canvas=document.createElement('canvas');canvas.width=Math.round(vp.width);canvas.height=Math.round(vp.height);
+     await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;
+     ajanNotice('Görüntü PDF: OCR okunuyor…');
+     const worker=await Tesseract.createWorker('eng',1);
+     try{txt=(await worker.recognize(canvas)).data.text;method='OCR (görüntü)'}finally{await worker.terminate()}
+    }catch(e){errors.push('OCR: '+e.message)}
+   }
+  }catch(e){errors.push('PDF.js: '+e.message)}
+  if(token!==ajanReadToken)return;
+  let found=[];
+  if(txt.trim().length>20)found=ajanExtract(txt);
+  const essential=['length','width','thick','sheetMass','partsMass','scrapMass','reuseMass'];
+  if(essential.some(k=>$(k).value==='')){
+   try{
+    const backup=await cbsOfflinePdfText(file);
+    if(token!==ajanReadToken)return;
+    const priorValues=Object.fromEntries(fields.map(k=>[k,$(k).value]));
+    const more=ajanExtract(backup);
+    for(const [k,v] of Object.entries(priorValues))if(v!=='')$(k).value=v;
+    if(more.length){found=[...new Set([...found,...more])];method=method?method+' + yerel yedek':'yerel PDF metin çözümleyici'}
+   }catch(e){errors.push('Yerel okuma: '+e.message)}
+  }
+  if(token!==ajanReadToken)return;
+  const missing=['length','width','thick','sheetMass','partsMass','scrapMass','reuseMass','theory'].filter(k=>$(k).value==='');
+  if(!missing.length){
+   ajanNotice('✓ '+method+' ile okundu. Alanlar: '+found.join(', ')+'. Kaydetmeden önce AJAN PDF ile karşılaştır.');
+  }else{
+   ajanNotice('⚠ PDF kısmen okundu. Eksik: '+missing.join(', ')+'. '+(errors.length?'Ayrıntı: '+errors.join(' | ')+'. ':'')+'Eksik sac ölçülerini ve ağırlıkları AJAN PDF ile doğrula; tahmini hurda yazılmaz.');
+  }
+  weightCheck();
+ }catch(e){if(token===ajanReadToken)ajanNotice('✕ PDF okunamadı: '+e.message+'. Kaydetmeden önce değerleri PDF ile karşılaştır.');}
+}
+
+
+
+// V4.0 — AJAN RAPORU TEK KAYNAK. PDF'deki orijinal değerler otomatik formülle ASLA silinmez.
+let cbsAjanPdfSource=false;
+const cbsOldUpdateSheetMass=updateSheetMass;
+updateSheetMass=function(force=false){
+ if(cbsAjanPdfSource) return;
+ return cbsOldUpdateSheetMass(force);
+};
+const cbsOldEnsureSheetMass=ensureSheetMass;
+ensureSheetMass=function(){if(cbsAjanPdfSource)return;return cbsOldEnsureSheetMass()};
+function cbsAjanRead(raw){
+ const t=String(raw||'').replace(/\r/g,'').replace(/[|]/g,' ').replace(/\u00a0/g,' ');
+ const compact=t.replace(/\s+/g,' ');
+ const found=[];
+ const put=(key,value,label)=>{
+  if(value===undefined||value===null||value==='')return;
+  if(!['material','theory','mpgName'].includes(key)&&!Number.isFinite(Number(value)))return;
+  $(key).value=String(value);found.push(label);
+ };
+ const flexLabel=(label)=>label
+  .replace(/[.*+?^${}()|[\]\\]/g,'\\$&')
+  .replace(/\\ /g,'[\\s:;,_()\\[\\]\\-]*')
+  .replace(/([A-Za-zÇĞİÖŞÜçğıöşü])/g,'$1\\s*');
+ const labelNumber=(labels,opts={})=>{
+  for(const label of labels){
+   const base=flexLabel(label);
+   const unit=opts.unit==='kg' ? '(?:\\s*(?:\\(|\\[)?\\s*(?:k\\s*g|kg)\\s*(?:\\)|\\])?)?' : '';
+   const re1=new RegExp(base+unit+'\\s*[:=\\-]?\\s*([0-9]+(?:[.,][0-9]+)?)','i');
+   const re2=new RegExp(base+'[^0-9\\n]{0,30}([0-9]+(?:[.,][0-9]+)?)','i');
+   let m=compact.match(re1)||compact.match(re2)||t.match(re1)||t.match(re2);
+   if(m){const n=ajanNumber(m[1]);if(Number.isFinite(n))return n;}
+  }
+  return null;
+ };
+ const labelText=(labels,replacement)=>{
+  for(const label of labels){
+   const base=flexLabel(label);
+   const re=new RegExp(base+'\\s*[:=\\-]?\\s*'+replacement,'i');
+   const m=compact.match(re)||t.match(re);
+   if(m)return m[1];
+  }
+  return null;
+ };
+ const labelTime=(labels)=>{
+  for(const label of labels){
+   const base=flexLabel(label);
+   const re1=new RegExp(base+'[^0-9\\n]{0,24}(\\d{1,2}:\\d{2}(?::\\d{2})?)','i');
+   const m=compact.match(re1)||t.match(re1);
+   if(m)return m[1];
+  }
+  let m=compact.match(/\b(?:Total\s+)?(?:Cutting\s+)?Time\b[^0-9\n]{0,16}(\d{1,2}:\d{2}(?::\d{2})?)/i);
+  if(m)return m[1];
+  return null;
+ };
+ const pickMaterial=()=>{
+  const m=compact.match(/\b(Mild\s*Steel|P355GH|P355NH|S235JR|S235J2|S355JR|S355J2|304L?|AISI\s*304L?|316L?|AISI\s*316L?|DKP|ST37|ST52)\b/i);
+  return m?m[1].replace(/\s+/g,' ').trim():null;
+ };
+ const sheet=labelNumber(['Total Sheet Weight','Sheet Weight','Total Plate Weight','Plate Weight','Levha Ağırlığı','Toplam Levha Ağırlığı','Sac Ağırlığı','Total Sheet Wt','Sheet Wt'],{unit:'kg'});
+ const parts=labelNumber(['Total Parts Weight','Net Parts Weight','Part Weight','Parts Weight','Net Weight','Net Parça Ağırlığı','Toplam Parça Ağırlığı','Net Parça Kg','Net Parça'],{unit:'kg'});
+ const scrap=labelNumber(['Scrap Metal Weight','Scrap Weight','Hurda Ağırlığı','Hurda Kg','Scrap Metal Wt','Metal Scrap Weight'],{unit:'kg'});
+ const reusable=labelNumber(['Reusable Sheet Weight','Reusable Weight','Reusable Sheet Wt','Kullanılabilir Sac','Kullanılabilir Sac Ağırlığı','Reusable Kg'],{unit:'kg'});
+ if(sheet!==null)put('sheetMass',sheet,'AJAN levha kg');
+ if(parts!==null)put('partsMass',parts,'AJAN net ürün kg');
+ if(scrap!==null)put('scrapMass',scrap,'AJAN hurda kg');
+ if(reusable!==null)put('reuseMass',reusable,'AJAN Reusable kg');
+ cbsAjanPdfSource=Boolean($('sheetMass').value&&$('scrapMass').value);
+ let m=compact.match(/Sheet\s*Size\s*[:=]?\s*(\d{3,5})\s*[xX×]\s*(\d{3,5})/i);
+ if(m){put('length',m[1],'Levha boyu');put('width',m[2],'Levha eni')}
+ const mpg=labelText(['File Name','MPG File','Program Name'],'([\\w().-]+\\.mpg)');
+ if(mpg)put('mpgName',mpg,'MPG adı');
+ const th=labelNumber(['Thickness','Plate Thickness','Sheet Thickness','Kalınlık','Sac Kalınlığı','Levha Kalınlığı','Thk','Thk.']);
+ if(th!==null&&th>=0.1&&th<=60)put('thick',th,'AJAN kalınlığı');
+ const mat=pickMaterial();
+ if(mat)put('material',mat,'AJAN malzeme');
+ const time=labelTime(['Total Cutting Time','Cutting Time','Kesim Süresi','Teorik Süre','Cycle Time']);
+ if(time)put('theory',time,'AJAN kesim süresi');
+ const planned=labelNumber(['Repeat Sheet No','Repeat (Sheet No)','Levha Kesilecek','Planned Sheet','Planned Qty','Plan Adedi']);
+ if(planned!==null&&planned>0)put('planned',planned,'Plan adedi');
+ const path=labelNumber(['Cutting Path Length','Path Length','Kesim Yolu','Kesim Yolu Uzunluğu']);
+ const piercing=labelNumber(['Total Piercing','Piercing','Delme Sayısı']);
+ if(sheet!==null){
+  $('sheetMassHint').textContent='AJAN PDF orijinal: '+sheet.toFixed(2)+' kg. PDF değeri formülle değiştirilmez.';
+ }
+ const extra=$('cbsAjanExtra');if(extra)extra.textContent='Kesim yolu: '+(path===null?'PDF’de okunamadı':path.toLocaleString('tr-TR')+' mm')+' | Delme: '+(piercing===null?'—':piercing)+' | AJAN hurda: '+(scrap===null?'okunamadı':scrap.toFixed(2)+' kg')+' | Reusable: '+(reusable===null?'okunamadı':reusable.toFixed(2)+' kg');
+ if([sheet,parts,scrap,reusable].every(v=>v!==null&&Number.isFinite(v))){
+  const difference=sheet-parts-scrap-reusable;
+  $('massCheck').textContent='AJAN DENGE: '+sheet.toFixed(2)+' = '+parts.toFixed(2)+' ürün + '+scrap.toFixed(2)+' hurda + '+reusable.toFixed(2)+' Reusable kg. Fark '+difference.toFixed(3)+' kg.';
+ }
+ return found;
+}
+// V4.3: dimension parser handles fragmented AJAN text, multi-line labels, and individual dimensions.
+// Values are accepted only when labeled, or when following a labeled dimension group.
+function cbsAjanDimensions(raw){
+ const original=String(raw||'').replace(/\r/g,'').replace(/\u00a0/g,' ')
+  .replace(/[×✕]/g,'x').replace(/[：]/g,':');
+ const text=original.replace(/[ \t]+/g,' ').replace(/\n[ \t]+/g,'\n');
+ // A PDF renderer can split a single number into several adjacent text items.
+ // This normalized form is used only after finding explicit sheet-size labels.
+ const compact=text.replace(/\s+/g,' ');
+ const digit='([0-9]{3,5}(?:[.,][0-9]{1,2})?)';
+ const sep='\\s*(?:[xX*]|\\bby\\b|\\bile\\b)\\s*';
+ const labels='(?:Sheet\\s*(?:Size|Dimensions?|Dim\\.?|Format)|Plate\\s*(?:Size|Dimensions?)|Stock\\s*(?:Size|Dimensions?)|Blank\\s*(?:Size|Dimensions?)|Sac\\s*(?:Ebat(?:[ıi]|lar[ıi])?|Ölçü(?:ler[ıi])?|Boyut(?:lar[ıi])?)|Levha\\s*(?:Ebat(?:[ıi]|lar[ıi])?|Ölçü(?:ler[ıi])?|Boyut(?:lar[ıi])?))';
+ const patterns=[
+  new RegExp(labels+'\\s*(?:\\(\\s*mm\\s*\\))?\\s*[:=\\-]?\\s*'+digit+sep+digit,'i'),
+  new RegExp(labels+'\\s*(?:\\(\\s*mm\\s*\\))?\\s*[:=\\-]?\\s*'+digit+'\\s+(?:mm\\s+)?'+digit+'\\s*(?:mm)?(?=\\s|$)','i'),
+ ];
+ const put=(id,n)=>{if($(id).value!=='')return false;if(!Number.isFinite(n)||n<100||n>20000)return false;$(id).value=String(n);return true};
+ const found=[];
+ const parse=n=>ajanNumber(n);
+ for(const re of patterns){const m=compact.match(re);if(m){
+  const a=parse(m[1]),b=parse(m[2]);
+  if(put('length',a))found.push('Levha boyu');
+  if(put('width',b))found.push('Levha eni');
+  break;
+ }}
+ const labeled=(names)=>new RegExp('(?:'+names+')\\s*(?:\\(\\s*mm\\s*\\))?\\s*[:=\\-]?\\s*([0-9]{3,5}(?:[.,][0-9]{1,2})?)\\b','i');
+ const width=text.match(labeled('Sheet\\s*Width|Plate\\s*Width|Width|Sac\\s*Eni|Levha\\s*Eni|Genişlik'));
+ const length=text.match(labeled('Sheet\\s*Length|Plate\\s*Length|Length|Sac\\s*Boyu|Levha\\s*Boyu|Uzunluk'));
+ if(length&&put('length',parse(length[1])))found.push('Levha boyu');
+ if(width&&put('width',parse(width[1])))found.push('Levha eni');
+ // For tables with line breaks, search locally after the explicit thickness heading.
+ const thickLabel=/(?:Thickness|Thick\s*ness|Plate\s*Thickness|Sheet\s*Thickness|Kal[ıi]nl[ıi]k|Sac\s*Kal[ıi]nl[ıi]ğ[ıi]|Levha\s*Kal[ıi]nl[ıi]ğ[ıi]|\bThk\b|\bThk\.)/i;
+ let thick=null;
+ for(const variant of [text,compact]){
+  const m=variant.match(new RegExp(thickLabel.source+'\\s*(?:\\(\\s*m\\s*m\\s*\\)|\\bmm\\b)?\\s*[:=\\-]?\\s*([0-9]{1,2}(?:[.,][0-9]{1,3})?)\\s*(?:mm)?\\b','i'));
+  if(m){let v=parse(m[1]);if(v>=0.1&&v<=60){thick=v;break}}
+ }
+ if(thick===null){
+  // Header-column format e.g. `Thickness (mm) | Material ...` then numeric next line.
+  const re=/(?:Thickness|Kal[ıi]nl[ıi]k)\s*\(\s*mm\s*\)[^\n]{0,110}\n\s*(\d{1,2}(?:[.,]\d{1,2})?)\b/i;
+  const m=text.match(re);if(m){const v=parse(m[1]);if(v>=0.1&&v<=60)thick=v}
+ }
+ if(thick!==null&&$('thick').value===''){$('thick').value=String(thick);found.push('Sac kalınlığı')}
+ if(found.length){const calc=$('sheetMass');if(calc&&calc.value==='')updateSheetMass()}
+ return found;
+}
+const cbsPriorRead=cbsAjanRead;
+cbsAjanRead=function(raw){
+ const found=cbsPriorRead(raw);
+ return [...new Set([...found,...cbsAjanDimensions(raw)])];
+};
+
+// Replace weak extractor with AJAN labeled-field parser (called from existing PDF.js flow).
+ajanExtract=cbsAjanRead;
+// A different PDF must never carry stale masses from previous job.
+$('pdfFile').addEventListener('change',function(){cbsAjanPdfSource=false},true);
+$('orderClear').addEventListener('click',function(){cbsAjanPdfSource=false},true);
+// Manual button respects PDF: do not turn AJAN fire into sheet-minus-parts.
+$('manualMassCalculate').addEventListener('click',function(e){
+ if(!cbsAjanPdfSource)return;
+ e.stopImmediatePropagation();e.preventDefault();weightCheck();
+ $('massCheck').textContent='AJAN rapor değerleri korunuyor. Fire '+$('scrapMass').value+' kg, Reusable '+$('reuseMass').value+' kg ayrı.';
+},true);
+$('orderForm').addEventListener('submit',function(){if(cbsAjanPdfSource){weightCheck()}},true);
+
+
+// V4.5: Targeted OCR of scanned AJAN reports, with explicit field assignment.
+// The original order/daily/monthly reporting code and AJAN source weights are preserved.
+const cbsV45PriorReader=readAjanPdf;
+const cbsV45ReadState={busy:false};
+function cbsV45Crop(canvas,x,y,w,h,mul=2){
+ const factor=canvas.width/1240;
+ const c=document.createElement('canvas');
+ c.width=Math.ceil(w*factor*mul);c.height=Math.ceil(h*factor*mul);
+ const ctx=c.getContext('2d',{willReadFrequently:true});
+ ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);
+ ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+ ctx.drawImage(canvas,x*factor,y*factor,w*factor,h*factor,0,0,c.width,c.height);
+ return c;
+}
+function cbsV45Digits(s){
+ if(!s)return null;
+ const z=String(s).replace(/[Oo]/g,'0').replace(/[Il|]/g,'1').replace(/[,]/g,'.');
+ const a=z.match(/\d{1,5}(?:\.\d{1,3})?/g);
+ if(!a||!a.length)return null;
+ const n=Number(a[0]);return Number.isFinite(n)?n:null;
+}
+function cbsV45Put(id,value){
+ if(value==null||value===''||!Number.isFinite(Number(value)))return false;
+ $(id).value=String(value);return true;
+}
+function cbsV45NumberByLabel(text,labels){
+ const lines=text.replace(/\r/g,'').split('\n').map(s=>s.trim()).filter(Boolean);
+ for(let i=0;i<lines.length;i++){
+  const low=lines[i].toLowerCase().replace(/[^a-z]/g,'');
+  if(labels.some(label=>low.includes(label))){
+   let after=lines[i].split('=');
+   let val=after.length>1?cbsV45Digits(after[after.length-1]):null;
+   if(val==null){const z=lines[i].match(/(?:\(\s*kg\s*\))\s*[:=]?\s*(\d+[.,]\d+)/i);if(z)val=cbsV45Digits(z[1]);}
+   if(val!=null)return val;
+  }
+ }
+ return null;
+}
+async function cbsV45OCRPdf(file,token){
+ await cbsLoadPdfJs();if(token!==ajanReadToken)return;
+ const pdf=await pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
+ const page=await pdf.getPage(1);
+ const view=page.getViewport({scale:1240/page.getViewport({scale:1}).width});
+ const canvas=document.createElement('canvas');canvas.width=Math.round(view.width);canvas.height=Math.round(view.height);
+ await page.render({canvasContext:canvas.getContext('2d'),viewport:view}).promise;
+ if(token!==ajanReadToken)return;
+ // Tesseract is required for raster-only PDFs; load one of two CDNs.
+ if(!window.Tesseract){let error;
+  for(const url of ['https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js','https://unpkg.com/tesseract.js@5/dist/tesseract.min.js']){
+   try{await scriptOnce(url,'Tesseract');break}catch(e){error=e}
+  }
+  if(!window.Tesseract)throw Error('OCR motoru indirilemedi. İnternet bağlantısını kontrol et: '+(error?.message||''));
+ }
+ ajanNotice('Görüntü PDF algılandı. AJAN tablo hücreleri OCR ile okunuyor…');
+ const worker=await Tesseract.createWorker('eng',1);
+ const recognize=async(c,psm='6')=>{
+  await worker.setParameters({tessedit_pageseg_mode:psm,preserve_interword_spaces:'1'});
+  return (await worker.recognize(c)).data.text||'';
+ };
+ try{
+  // AJAN's right-hand weight table; separate from the diagram and part grid.
+  const right=await recognize(cbsV45Crop(canvas,735,525,495,265,2.2));
+  if(token!==ajanReadToken)return;
+  const header=await recognize(cbsV45Crop(canvas,0,55,1230,150,2),'6');
+  if(token!==ajanReadToken)return;
+  const cutting=await recognize(cbsV45Crop(canvas,0,520,445,285,2),'6');
+  const foot=await recognize(cbsV45Crop(canvas,0,1000,850,415,1.6),'6');
+  const docTitle=await recognize(cbsV45Crop(canvas,170,5,900,80,2),'6');
+  if(token!==ajanReadToken)return;
+  // Parse labels first, using full OCR of adjacent row text.
+  const data={
+   partsMass:cbsV45NumberByLabel(right,['totalpartsweight','netpartsweight']),
+   reuseMass:cbsV45NumberByLabel(right,['reusablesheetweight','reusableweight']),
+   scrapMass:cbsV45NumberByLabel(right,['scrapmetalweight','scrapweight']),
+   sheetMass:cbsV45NumberByLabel(right,['totalsheetweight','sheetweight'])
+  };
+  // Header OCR: extract dimensions from labeled Sheet Size and thickness.
+  const size=header.match(/(\d{3,5})\s*[xX×]\s*(\d{3,5})\s*mm/i);
+  if(size){cbsV45Put('length',Number(size[1]));cbsV45Put('width',Number(size[2]));}
+  const thickness=header.match(/Thickness[\s\S]{0,70}?\b([0-9]{1,2}(?:[.,][0-9])?)\s*(?:mm|Amperage)/i);
+  if(thickness){const v=ajanNumber(thickness[1]);if(v>=1&&v<=40)cbsV45Put('thick',v);}
+  const order=(docTitle+' '+header).match(/(?:S[Iİ]PAR[Iİ][ŞS]\s*NO|ORDER\s*NO)\s*[:# ]+([0-9]+)/i);
+  if(order)$('jobNo').value=order[1];
+  const grade=docTitle.match(/\b(P355\s*(?:NH|GH)|S235\s*(?:JR|J2)|S355\s*(?:JR|J2)|304L?|316L?|DKP)\b/i);
+  if(grade)$('material').value=grade[1].replace(/\s+/g,'').toUpperCase();
+  const planned=foot.match(/\b(\d{1,4})\s*LEVHA\s*KES[Iİ]LECEK/i);
+  if(planned)$('planned').value=planned[1];
+  const time=cutting.match(/Total\s*Cutting\s*Time[^\d]{0,20}([0-9]{1,2}:[0-9]{2}:[0-9]{2})/i);
+  if(time)$('theory').value=time[1];
+  // When OCR of labels is inaccurate, read each numeric cell separately.
+  // This is safer than mistakenly interpreting percentages as weights.
+  const missing=Object.keys(data).filter(k=>data[k]===null);
+  if(missing.length){
+   // Locate table rows by the vertical order of OCR-detected values.
+   // Crop numeric column; each recognized line corresponds to piercing, parts, reusable, scrap, sheet, path.
+   const numericText=await recognize(cbsV45Crop(canvas,985,535,228,235,3),'6');
+   const nums=numericText.split(/\r?\n/).map(s=>s.match(/\b\d{1,5}[.,]\d{1,3}\b/)?.[0]).filter(Boolean).map(s=>ajanNumber(s));
+   if(nums.length>=5){
+    // Distinguish an integer piercing row from the following four decimal weights.
+    const candidates=nums.slice(0,4);
+    const keys=['partsMass','reuseMass','scrapMass','sheetMass'];
+    keys.forEach((key,i)=>{if(data[key]===null&&Number.isFinite(candidates[i]))data[key]=candidates[i]});
+   }
+  }
+  // Cross-check sums before using OCR-derived masses. Never modify a PDF original weight by formula.
+  for(const key of Object.keys(data))if(data[key]!=null&&Number.isFinite(data[key]))cbsV45Put(key,data[key]);
+  const present=Object.entries(data).filter(([k,v])=>v!=null).map(([k])=>k);
+  if(data.sheetMass!=null)cbsAjanPdfSource=true;
+  if(data.sheetMass==null&&$('length').value&&$('width').value&&$('thick').value)updateSheetMass(true);
+  const masses=['sheetMass','partsMass','scrapMass','reuseMass'].map(k=>$(k).value===''?null:Number($(k).value));
+  const full=masses.every(v=>v!==null&&Number.isFinite(v));
+  const imbalance=full?masses[0]-masses[1]-masses[2]-masses[3]:null;
+  const missingFields=['length','width','thick','sheetMass','partsMass','scrapMass','reuseMass','theory'].filter(k=>$(k).value==='');
+  let message='OCR ile okunan alanlar: '+(present.join(', ')||'ağırlık bulunamadı')+'. ';
+  if(missingFields.length)message+='Eksik alanlar: '+missingFields.join(', ')+'. ';
+  if(full&&Math.abs(imbalance)>0.25)message+='⚠ AĞIRLIK DENGESİ UYUŞMUYOR ('+imbalance.toFixed(2)+' kg). OCR değerlerini PDF ile karşılaştırıp düzelt. '; 
+  else if(full)message+='✓ Ağırlık dengesi doğrulandı. ';
+  ajanNotice(message);
+  weightCheck();
+ }finally{await worker.terminate();}
+}
+readAjanPdf=async function(file){
+ if(!file)return;
+ const token=++ajanReadToken;
+ const ids=['jobNo','planned','length','width','thick','material','theory','sheetMass','partsMass','scrapMass','reuseMass'];
+ ids.forEach(k=>$(k).value='');cbsAjanPdfSource=false;sheetMassAutoValue='';
+ ajanNotice('PDF türü kontrol ediliyor…');
+ try{
+  await cbsLoadPdfJs();if(token!==ajanReadToken)return;
+  const pdf=await pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
+  const page=await pdf.getPage(1);const content=await page.getTextContent();
+  const hasText=content.items.filter(x=>x.str).map(x=>x.str).join(' ').length>120;
+  if(hasText){
+   const t=await cbsTextFromPdf(pdf,token);if(token!==ajanReadToken)return;
+   ajanExtract(t);
+   const missing=['sheetMass','partsMass','scrapMass','reuseMass'].filter(k=>$(k).value==='');
+   if(missing.length)await cbsV45OCRPdf(file,token);
+   else ajanNotice('✓ PDF metninden değerler kutulara aktarıldı. Kaydetmeden önce doğrula.');
+  }else await cbsV45OCRPdf(file,token);
+  if(token!==ajanReadToken)return;
+  const fromName=file.name.replace(/\.pdf$/i,'');
+  if(!$('mpgName').value)$('mpgName').value=fromName+'.mpg';
+  if(!$('jobName').value)$('jobName').value=fromName;
+  // Order number, plan count and grade in image PDFs may also be supplied manually.
+  weightCheck();
+ }catch(e){if(token===ajanReadToken)ajanNotice('⚠ PDF OCR başarısız: '+e.message+'. Eksik veriler otomatik doldurulmadı.');}
+};
+
+
+// Parent CBS uygulamasından paylaşılan kayıtları yükle.
+window.cbsSacLoaded=false;
+window.cbsSacSetData=function(payload,canEdit){
+ if(!payload||!Array.isArray(payload.orders)||!Array.isArray(payload.entries))return;
+ state=JSON.parse(JSON.stringify(payload));window.cbsSacLoaded=true;
+ const access=document.getElementById('cbsSacAccess');
+ access.style.display=canEdit?'none':'block';access.textContent=canEdit?'':'Görüntüleyici yetkisi: Kayıt ekleme ve düzenleme yapılamaz.';
+ if(!canEdit){document.querySelectorAll('form button[type="submit"],button[id*="Delete"],button[id*="Clear"]').forEach(b=>b.disabled=true);document.querySelectorAll('form input,form select,form textarea').forEach(el=>el.disabled=true);}
+ refresh();
+};
+window.cbsSacShowError=function(message){const el=document.getElementById('cbsSacAccess');el.style.display='block';el.textContent=message;};
+window.parent.postMessage({type:'CBS_SAC_READY'},location.origin);
+</script>
+</body></html>
