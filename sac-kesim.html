@@ -826,6 +826,11 @@ $('cordDashSummary').innerHTML=
 };
 const cordOldReport=report;
 report=function(){cordOldReport();let dateMode=val('reportType')==='month',period=dateMode?val('reportMonth'):val('reportDate'),records=cordRecords().filter(r=>dateMode?r.date.startsWith(period):r.date===period),s=metrics(reportEntries()),kg=cordKg(records);$('cordReportSummary').innerHTML='<div class="card" style="margin-top:12px"><h3>Kordon hurdası ve birleşik fire (ayrı hesap)</h3><div class="statline"><div class="ministat"><small>Sac kesim hurdası + kullanılabilir</small><strong>'+nf(s.scrap+s.reuse,2)+' kg</strong></div><div class="ministat"><small>Kordon hurdası</small><strong>'+nf(kg,2)+' kg</strong></div><div class="ministat"><small>Toplam hurda</small><strong>'+nf(s.scrap+s.reuse+kg,2)+' kg</strong></div></div><p class="note">Kordon hurdası doğrudan sac kesim ağırlık denkliğine dahil edilmez.</p>'+(records.length?table(['Tarih','Bombe tipi','Ürün kodu','Çap mm','Kalınlık mm','Adet','Kordon hurdası kg'],records.map(r=>'<tr>'+td(r.date)+td(r.type==='E'?'Eliptik':'Torisferik')+td(safe(r.code))+td(r.d)+td(r.t)+td(r.qty,'num')+td(nf(r.kg,3),'num')+'</tr>')):'<p class="note">Bu döneme ait kordon hurdası kaydı yok.</p>')+'</div>';};
+// Rapor tarih alanlari ilk rapor fonksiyonuna bagli kalmasin: kordon dahil guncel raporu calistir.
+$('reportMonth').onchange=()=>report();
+$('reportDate').onchange=()=>report();
+$('reportType').onchange=()=>{$('monthFilterWrap').style.display=val('reportType')==='month'?'':'none';$('dateFilterWrap').style.display=val('reportType')==='day'?'':'none';report();};
+$('printReport').onclick=()=>{report();window.print();};
 $('cordMonth').value=month();$('cordDate').value=today();cordPopulate();cordRenderProfiles();cordRender();overview();report();
 
 
